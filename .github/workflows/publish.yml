@@ -43,7 +43,7 @@ jobs:
           sudo dpkg -i hugo.deb
           rm hugo.deb
 
-      - name: build
+      - name: Build
         working-directory: src
         run: >
           hugo build

@@ -32,10 +32,7 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
 
-      - name: check environment
-        run: |
-          ls -laApRv ./vendor/bundle
-          asciidoctor --version
+      - run: bundle install
 
       - name: Install Hugo
         run: |

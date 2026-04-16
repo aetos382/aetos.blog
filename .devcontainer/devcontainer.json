@@ -1,0 +1,44 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "overrideCommand": true,
+  "init": true,
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/ruby:1": {}
+  },
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "TZ": "Asia/Tokyo"
+  },
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "claude-code-config",
+      "target": "/home/vscode/.claude"
+    }
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "-shopify.ruby-lsp",
+        "Anthropic.claude-code",
+        "asciidoctor.asciidoctor-vscode",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "asciidoc.extensions.enableKroki": true,
+        "asciidoc.preview.asciidoctorAttributes": {
+          "kroki-server-url": "http://localhost:8000"
+        }
+      }
+    }
+  }
+}

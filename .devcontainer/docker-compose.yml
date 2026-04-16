@@ -1,0 +1,42 @@
+name: antora-blog
+
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: volume
+        source: claude-code-config
+        target: /home/vscode/.claude
+    depends_on:
+      - kroki
+    networks:
+      - kroki
+
+  kroki:
+    image: yuzutech/kroki:latest
+    environment:
+      KROKI_MERMAID_HOST: kroki-mermaid
+    networks:
+      - kroki
+      - kroki-internal
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  kroki-mermaid:
+    image: yuzutech/kroki-mermaid:latest
+    networks:
+      - kroki-internal
+    expose:
+      - 8002
+    restart: unless-stopped
+
+networks:
+  kroki:
+  kroki-internal:
+    internal: true
+
+volumes:
+  claude-code-config:

@@ -3,6 +3,7 @@ defaultContentLanguage = 'ja'
 locale = 'ja'
 title = 'My New Hugo Project'
 theme = 'github-style'
+hasCJKLanguage = true
 
 [caches]
   [caches.images]

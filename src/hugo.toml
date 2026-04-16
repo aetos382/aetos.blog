@@ -19,3 +19,6 @@ hasCJKLanguage = true
     extensions = ['asciidoctor-diagram']
     [markup.asciidocExt.attributes]
       source-highlighter = 'rouge'
+
+[params]
+  custom_css = 'css/syntax.css'

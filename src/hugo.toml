@@ -13,3 +13,9 @@ hasCJKLanguage = true
   [security.exec]
     allow =[ '^asciidoctor$', '^git$' ]
     osEnv = [ '(?i)^(PATH|GEM_PATH)$' ]
+
+[markup]
+  [markup.asciidocext]
+    extensions = ['asciidoctor-diagram']
+    [markup.asciidocExt.attributes]
+      source-highlighter = 'rouge'

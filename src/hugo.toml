@@ -21,4 +21,4 @@ hasCJKLanguage = true
       source-highlighter = 'rouge'
 
 [params]
-  custom_css = ['css/syntax.css']
+  custom_css = ['css/rouge.css']

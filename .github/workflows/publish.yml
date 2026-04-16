@@ -34,7 +34,7 @@ jobs:
 
       - name: check environment
         run: |
-          ls -la ./vendor/bundle
+          ls -la ./vendor/bundle/ruby
           asciidoctor --version
 
       - name: Install Hugo

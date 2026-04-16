@@ -30,8 +30,7 @@
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "github.vscode-github-actions",
-        "GitHub.vscode-pull-request-github",
-        "redhat.vscode-yaml"
+        "GitHub.vscode-pull-request-github"
       ],
       "settings": {
         "asciidoc.extensions.enableKroki": true,

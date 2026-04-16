@@ -32,7 +32,8 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
 
-      - run: bundle install
+      - name: test asciidoctor
+        run: bundle exec asciidoctor --version
 
       - name: Install Hugo
         run: |

@@ -1,8 +1,14 @@
-baseURL = 'https://aetos382.github.io/hugo-blog/'
+baseURL = 'http://localhost:3000'
 defaultContentLanguage = 'ja'
 locale = 'ja'
 title = 'My New Hugo Project'
+theme = 'github-style'
 
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
+
+[security]
+  [security.exec]
+    allow =[ '^asciidoctor$', '^git$' ]
+    osEnv = [ '(?i)^(PATH|GEM_PATH)$' ]

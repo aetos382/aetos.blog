@@ -7,6 +7,7 @@ timeZone = 'Asia/Tokyo'
 hasCJKLanguage = true
 enableRobotsTXT = true
 enableGitInfo = true
+cleanDestinationDir = true
 theme = 'github-style'
 
 [caches]
@@ -23,6 +24,7 @@ theme = 'github-style'
     extensions = ['asciidoctor-diagram']
     workingFolderCurrent = true
     [markup.asciidocExt.attributes]
+      skip-front-matter = 'true'
       source-highlighter = 'rouge'
 
 [params]

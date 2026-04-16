@@ -1,8 +1,0 @@
-+++
-date = '2026-04-16T18:36:06+09:00'
-draft = false
-title = 'Foobar'
-+++
-= Foobar
-
-Foobar

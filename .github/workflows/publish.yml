@@ -35,6 +35,7 @@ jobs:
           rm hugo.deb
 
       - name: build
+        working-directory: src
         run: >
           hugo build
 

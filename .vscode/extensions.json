@@ -1,7 +1,5 @@
 {
   "recommendations": [
-    "eliostruyf.vscode-front-matter",
-    "budparr.language-hugo-vscode",
     "tamasfe.even-better-toml"
   ]
 }

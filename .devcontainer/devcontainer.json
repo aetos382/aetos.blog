@@ -27,6 +27,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "-golang.go",
         "-shopify.ruby-lsp",
         "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",

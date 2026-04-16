@@ -1,9 +1,13 @@
 baseURL = 'http://localhost:3000'
+title = 'aetos.blog'
+copyright = 'Copyright (c) 2026 - aetos'
 defaultContentLanguage = 'ja'
 locale = 'ja'
-title = 'My New Hugo Project'
-theme = 'github-style'
+timeZone = 'Asia/Tokyo'
 hasCJKLanguage = true
+enableRobotsTXT = true
+enableGitInfo = true
+theme = 'github-style'
 
 [caches]
   [caches.images]
@@ -17,9 +21,12 @@ hasCJKLanguage = true
 [markup]
   [markup.asciidocext]
     extensions = ['asciidoctor-diagram']
+    workingFolderCurrent = true
     [markup.asciidocExt.attributes]
       source-highlighter = 'rouge'
-      rouge-style = 'github'
 
 [params]
   custom_css = ['css/rouge.css']
+
+[permalinks]
+  post = '/post/:year/:month/:day/:contentbasename'

@@ -16,8 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     env:
-      HUGO_VERSION: 0.160.1
-      DART_SASS_VERSION: 1.99.0
+      HUGO_VERSION: '0.160.1'
+      DART_SASS_VERSION: '1.99.0'
       TZ: Asia/Tokyo
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -40,7 +40,7 @@ jobs:
       - name: Create bin directory
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/bin
-          echo "${GITHUB_WORKSPACE}/bin" >> $GITHUB_PATH
+          echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
 
       - name: Generate binstubs
         run: |

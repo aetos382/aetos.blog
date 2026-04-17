@@ -34,7 +34,7 @@ RUN mkdir -p /home/vscode/.claude
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local
 
-COPY --chmod=+x ["docker-entrypoint.sh", "/"]
+COPY --chmod=+x [".devcontainer/docker-entrypoint.sh", "/"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sleep", "infinity"]

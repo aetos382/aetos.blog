@@ -43,6 +43,7 @@ jobs:
           echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
 
       - name: Generate binstubs
+        working-directory: src
         run: |
           bundle binstubs asciidoctor --path ${GITHUB_WORKSPACE}/bin/
 

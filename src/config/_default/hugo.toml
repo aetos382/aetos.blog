@@ -14,7 +14,7 @@ cleanDestinationDir = true
 
 [security]
   [security.exec]
-    allow =[ '^asciidoctor$', '^git$', '^go$', '^sass$' ]
+    allow =[ '^asciidoctor$', '^git$', '^go$', '^sass$', '^npx$' ]
     osEnv = [ '(?i)^(PATH|GEM_PATH)$' ]
 
 [markup]

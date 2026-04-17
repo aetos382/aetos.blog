@@ -21,7 +21,8 @@ RUN curl -fqsLS https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.g
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz
 
-RUN curl -qfsSL https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz -o dart-sass.tar.gz && \
+RUN mkdir /usr/local/dart-sass && \
+    curl -qfsSL https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz -o dart-sass.tar.gz && \
     tar -C /usr/local/dart-sass -xzf dart-sass.tar.gz --strip-components=1 && \
     rm dart-sass.tar.gz
 

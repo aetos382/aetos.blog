@@ -4,6 +4,7 @@ ARG HUGO_VERSION=0.160.1
 ARG DART_SASS_VERSION=1.99.0
 ARG RUBY_VERSION=4.0.2
 ARG GO_VERSION=1.26.2
+ARG REPOSITORY_HASH=unspecified
 
 WORKDIR /tmp
 
@@ -33,6 +34,7 @@ RUN mkdir -p /home/vscode/.claude
 
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local
+ENV REPOSITORY_HASH=${REPOSITORY_HASH}
 
 COPY --chmod=+x [".devcontainer/docker-entrypoint.sh", "/"]
 

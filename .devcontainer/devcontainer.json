@@ -23,15 +23,6 @@
     }
   ],
   "customizations": {
-    "codespaces": {
-      "repositories": {
-        "aetos382/github-style": {
-          "permissions": {
-            "contents": "write"
-          }
-        }
-      }
-    },
     "vscode": {
       "extensions": [
         "-golang.go",

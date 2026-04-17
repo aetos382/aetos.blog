@@ -54,7 +54,7 @@ jobs:
           echo "GEM_PATH=${HOME}/.gem:${default_gem_paths}" >> $GITHUB_ENV
           echo "${HOME}/.gem/bin" >> $GITHUB_PATH
 
-      - name: Install bundle
+      - name: Create binstubs
         run: |
           set -euo pipefail
           bundle config set bin .bin

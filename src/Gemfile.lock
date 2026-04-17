@@ -1,3 +1,9 @@
+PATH
+  remote: gems/asciidoctor-hello
+  specs:
+    asciidoctor-hello (0.1.0)
+      asciidoctor (>= 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -15,6 +21,7 @@ PLATFORMS
 DEPENDENCIES
   asciidoctor
   asciidoctor-diagram
+  asciidoctor-hello!
   rouge
 
 BUNDLED WITH

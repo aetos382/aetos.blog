@@ -48,9 +48,9 @@ jobs:
       - name: Create binstubs
         run: |
           set -euo pipefail
-          bundle config set bin bin
+          bundle config set bin ${GITHUB_WORKSPACE}/bin
           bundle binstubs asciidoctor
-          ls -laR bin
+          ls -laR ${GITHUB_WORKSPACE}/bin
 
       - name: Install Hugo
         run: |

@@ -28,12 +28,7 @@ RUN mkdir /usr/local/go && \
     tar -C /usr/local/go -xzf go.tar.gz --strip-components=1 && \
     rm go.tar.gz
 
-RUN cat >/etc/profile.d/ruby-gems.sh <<'EOF'
-export GEM_HOME="${HOME}/.gem"
-default_gem_path="$("/usr/local/ruby/bin/ruby" -r rubygems -e 'puts Gem.default_path.join(":")')"
-export GEM_PATH="${GEM_HOME}:${default_gem_path}"
-export PATH="${GEM_HOME}/bin:${PATH}"
-EOF
+COPY --chmod=+x [".devcontainer/ruby-gems.sh", "/etc/profile.d/"]
 
 USER vscode
 

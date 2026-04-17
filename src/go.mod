@@ -1,3 +1,3 @@
 module github.com/aetos382/aetos.blog
 
-go 1.22.2
+go 1.26.2

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PORT=${PORT:-1313}
+
+if [ -n "${CODESPACES:-}" ]; then
+    BASEURL="https://${CODESPACE_NAME}-${PORT}.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/"
+    exec hugo server --port "$PORT" --baseURL "$BASEURL" --appendPort=false "$@"
+else
+    exec hugo server --port "$PORT" "$@"
+fi

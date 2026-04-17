@@ -12,7 +12,7 @@
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
     "TZ": "Asia/Tokyo",
-    "PATH": "${containerWorkspaceFolder}/src/bin:${containerEnv:PATH}"
+    "PATH": "${containerWorkspaceFolder}/src/bin:${containerWorkspaceFolder}/src/scripts:${containerEnv:PATH}"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "mounts": [

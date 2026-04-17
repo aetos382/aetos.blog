@@ -83,13 +83,13 @@ jobs:
           echo "$PATH" | tr ':' '\n'
           hugo version | echo "hugo: $(cat -)"
           sass --version | echo "dart-sass: $(cat -)"
-          asciidoctor --version | echo "asciidoctor: $(cat -)"
+          bundle exec asciidoctor --version | echo "asciidoctor: $(cat -)"
           go version | echo "go: $(cat -)"
 
       - name: Build
         working-directory: src
         run: >
-          hugo build
+          bundle exec hugo build
           --baseURL ${{ steps.pages.outputs.base_url }}
           --environment production
           --minify

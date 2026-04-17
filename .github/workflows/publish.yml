@@ -77,7 +77,7 @@ jobs:
           set -euo pipefail
           hugo version | echo "hugo: $(cat -)"
           sass --version | echo "dart-sass: $(cat -)"
-          bundle exec asciidoctor --version | echo "asciidoctor: $(cat -)"
+          asciidoctor --version | echo "asciidoctor: $(cat -)"
           go version | echo "go: $(cat -)"
 
       - name: Build

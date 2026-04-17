@@ -36,7 +36,7 @@ jobs:
       - uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
         with:
           ruby-version: '4.0.2'
-          bundler-cache: true
+          bundler-cache: false
 
       - name: Prepare paths
         run: |
@@ -64,7 +64,6 @@ jobs:
           ruby -v
           bundle -v
           which asciidoctor || true
-          bundle exec asciidoctor --version
           echo "$PATH" | tr ':' '\n'
 
       - name: Install Hugo

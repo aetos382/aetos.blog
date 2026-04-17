@@ -78,7 +78,7 @@ jobs:
           asciidoctor --version | echo "asciidoctor: $(cat -)"
           go version | echo "go: $(cat -)"
           node --version | echo "node: $(cat -)"
-          npm --version | echo "npm: $(npm -)"
+          npm --version | echo "npm: $(cat -)"
 
       - name: Build
         working-directory: src

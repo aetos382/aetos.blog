@@ -18,6 +18,7 @@ jobs:
     env:
       HUGO_VERSION: '0.160.1'
       DART_SASS_VERSION: '1.99.0'
+      BUNDLE_GEMFILE: ${{ github.workspace }}/src/Gemfile
       TZ: Asia/Tokyo
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -37,17 +38,16 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
 
-      - name: Create bin directory
+      - name: Prepare paths
         run: |
+          set -euo pipefail
           mkdir -p ${GITHUB_WORKSPACE}/bin
           echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
 
-      - name: Generate binstubs
-        working-directory: src
-        run: |
-          bundle install
-          bundle config set bin ${GITHUB_WORKSPACE}/bin
-          bundle binstubs asciidoctor
+          default_gem_paths="$(ruby -r rubygems -e 'puts Gem.default_path.join(":")')"
+          echo "GEM_HOME=${HOME}/.gem" >> $GITHUB_ENV
+          echo "GEM_PATH=${HOME}/.gem:${default_gem_paths}" >> $GITHUB_ENV
+          echo "${HOME}/.gem/bin" >> $GITHUB_PATH
 
       - name: Install Hugo
         run: |
@@ -74,6 +74,8 @@ jobs:
         run: >
           hugo build
           --baseURL ${{ steps.pages.outputs.base_url }}
+          --environment production
+          --minify
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

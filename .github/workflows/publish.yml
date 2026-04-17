@@ -61,8 +61,11 @@ jobs:
       - name: test
         run: |
           set -euo pipefail
-          tr ':' '\n' <<< "$PATH"
-          which asciidoctor
+          ruby -v
+          bundle -v
+          which asciidoctor || true
+          bundle exec asciidoctor --version
+          echo "$PATH" | tr ':' '\n'
 
       - name: Install Hugo
         run: |

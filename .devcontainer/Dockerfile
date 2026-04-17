@@ -28,6 +28,8 @@ RUN mkdir /usr/local/go && \
     tar -C /usr/local/go -xzf go.tar.gz --strip-components=1 && \
     rm go.tar.gz
 
+RUN hugo completion bash > /etc/bash_completion.d/hugo
+
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
@@ -35,3 +37,5 @@ RUN mkdir -p /home/vscode/.claude
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local
 ENV REPOSITORY_HASH=${REPOSITORY_HASH}
+
+RUN hugo completion powershell >> /home/vscode/.config/powershell/profile.ps1

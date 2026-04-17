@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/base:2-noble
 
+ARG HUGO_VERSION=0.160.1
 ARG RUBY_VERSION=4.0.2
 ARG GO_VERSION=1.26.2
 
@@ -14,6 +15,11 @@ RUN curl -fqsLS https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.g
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz
 
+RUN mkdir /usr/local/hugo && \
+    curl -qfsSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz -o hugo.tar.gz && \
+    tar -C /usr/local/hugo -xzf hugo.tar.gz && \
+    rm hugo.tar.gz
+
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
@@ -21,7 +27,5 @@ RUN mkdir -p /home/vscode/.claude
 ENV GEM_HOME=/home/vscode/.gem
 ENV GEM_PATH=/home/vscode/.gem
 
-ENV PATH=/usr/local/ruby/bin:/usr/local/go/bin:/home/vscode/.gem/bin:$PATH
+ENV PATH=/usr/local/hugo/bin:/usr/local/ruby/bin:/usr/local/go/bin:/home/vscode/.gem/bin:$PATH
 ENV GOTOOLCHAIN=local
-
-RUN

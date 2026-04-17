@@ -28,12 +28,9 @@ RUN mkdir /usr/local/go && \
     tar -C /usr/local/go -xzf go.tar.gz --strip-components=1 && \
     rm go.tar.gz
 
-COPY --chmod=+x [".devcontainer/ruby-gems.sh", "/etc/profile.d/"]
-
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
-RUN mkdir -p /home/vscode/.gem
 
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local

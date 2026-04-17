@@ -63,10 +63,10 @@ jobs:
 
       - name: Verify installations
         run: |
-          echo "Dart Sass: $(sass --version)"
           echo "Hugo: $(hugo version)"
-          echo "Go: $(go version)"
+          echo "Dart Sass: $(sass --version)"
           echo "Asciidoctor: $(asciidoctor --version)"
+          echo "Go: $(go version)"
 
       - name: Build
         working-directory: src

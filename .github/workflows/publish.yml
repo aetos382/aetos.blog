@@ -45,20 +45,12 @@ jobs:
           mkdir -p ${GITHUB_WORKSPACE}/bin
           echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
 
-      - name: Prepare paths
-        if: false
-        run: |
-          set -euo pipefail
-          default_gem_paths="$(ruby -r rubygems -e 'puts Gem.default_path.join(":")')"
-          echo "GEM_HOME=${HOME}/.gem" >> $GITHUB_ENV
-          echo "GEM_PATH=${HOME}/.gem:${default_gem_paths}" >> $GITHUB_ENV
-          echo "${HOME}/.gem/bin" >> $GITHUB_PATH
-
       - name: Create binstubs
         run: |
           set -euo pipefail
-          bundle config set bin ./bin
+          bundle config set bin bin
           bundle binstubs asciidoctor
+          ls -laR bin
 
       - name: Install Hugo
         run: |

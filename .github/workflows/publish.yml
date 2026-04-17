@@ -46,7 +46,8 @@ jobs:
         working-directory: src
         run: |
           bundle install
-          bundle binstubs asciidoctor --path ${GITHUB_WORKSPACE}/bin/
+          bundle config set bin ${GITHUB_WORKSPACE}/bin
+          bundle binstubs asciidoctor
 
       - name: Install Hugo
         run: |

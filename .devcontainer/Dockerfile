@@ -33,9 +33,6 @@ RUN mkdir -p /home/vscode/.claude
 
 ENV GEM_HOME=/home/vscode/.gem
 ENV GEM_PATH=/home/vscode/.gem
-ENV BUNDLE_PATH=/home/vscode/.bundle
-ENV BUNDLE_DISABLE_SHARED_GEMS=true
-ENV BUNDLE_BIN=/home/vscode/.local/bin
 
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local

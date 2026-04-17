@@ -1,10 +1,16 @@
 FROM mcr.microsoft.com/devcontainers/base:2-noble
 
 ARG HUGO_VERSION=0.160.1
+ARG DART_SASS_VERSION=1.99.0
 ARG RUBY_VERSION=4.0.2
 ARG GO_VERSION=1.26.2
 
 WORKDIR /tmp
+
+RUN mkdir /usr/local/hugo && \
+    curl -qfsSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz -o hugo.tar.gz && \
+    tar -C /usr/local/hugo -xzf hugo.tar.gz && \
+    rm hugo.tar.gz
 
 RUN mkdir /usr/local/ruby && \
     curl -fqsLS https://github.com/jdx/ruby/releases/download/${RUBY_VERSION}/ruby-${RUBY_VERSION}.x86_64_linux.tar.gz -o ruby.tar.gz && \
@@ -15,10 +21,9 @@ RUN curl -fqsLS https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.g
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz
 
-RUN mkdir /usr/local/hugo && \
-    curl -qfsSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz -o hugo.tar.gz && \
-    tar -C /usr/local/hugo -xzf hugo.tar.gz && \
-    rm hugo.tar.gz
+RUN curl -qfsSL https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz -o dart-sass.tar.gz && \
+    tar -C /usr/local/dart-sass -xzf dart-sass.tar.gz --strip-components=1 && \
+    rm dart-sass.tar.gz
 
 USER vscode
 
@@ -27,5 +32,5 @@ RUN mkdir -p /home/vscode/.claude
 ENV GEM_HOME=/home/vscode/.gem
 ENV GEM_PATH=/home/vscode/.gem
 
-ENV PATH=/usr/local/hugo/bin:/usr/local/ruby/bin:/usr/local/go/bin:/home/vscode/.gem/bin:$PATH
+ENV PATH=/usr/local/hugo/bin:/usr/local/ruby/bin:/usr/local/go/bin:/usr/local/dart-sass/bin:/home/vscode/.gem/bin:$PATH
 ENV GOTOOLCHAIN=local

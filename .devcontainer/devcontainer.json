@@ -4,8 +4,7 @@
   "overrideCommand": true,
   "init": true,
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/prplecake/devcontainer-features/dart-sass:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "remoteUser": "vscode",
   "remoteEnv": {

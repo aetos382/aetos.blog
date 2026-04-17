@@ -20,7 +20,7 @@ theme = 'github-style'
 
 [markup]
   [markup.asciidocext]
-    extensions = ['asciidoctor-diagram']
+    extensions = ['asciidoctor-diagram', 'test-hello']
     workingFolderCurrent = true
     [markup.asciidocExt.attributes]
       skip-front-matter = 'true'

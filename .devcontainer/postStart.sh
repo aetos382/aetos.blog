@@ -1,5 +1,0 @@
-hugo version | echo "hugo: $(cat -)"
-sass --version | echo "dart-sass: $(cat -)"
-asciidoctor --version | echo "asciidoctor: $(cat -)"
-go version | echo "go: $(cat -)"
-claude --version | echo "claude code: $(cat -)"

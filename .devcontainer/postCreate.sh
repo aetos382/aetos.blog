@@ -7,4 +7,3 @@ bundle config set --global bin ${PWD}/src/bin
 (cd src && bundle install && bundle binstubs asciidoctor)
 
 curl -fqsLS https://claude.ai/install.sh | bash
-

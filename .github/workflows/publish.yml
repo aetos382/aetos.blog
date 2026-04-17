@@ -79,6 +79,7 @@ jobs:
           hugo version | echo "hugo: $(cat -)"
           sass --version | echo "dart-sass: $(cat -)"
           asciidoctor --version | echo "asciidoctor: $(cat -)"
+          which asciidoctor
           go version | echo "go: $(cat -)"
 
       - name: Build

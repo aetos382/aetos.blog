@@ -42,6 +42,7 @@ jobs:
       - run: echo ${{ steps.ruby.outputs.ruby-prefix }}
 
       - name: Prepare paths
+        if: false
         run: |
           set -euo pipefail
           default_gem_paths="$(ruby -r rubygems -e 'puts Gem.default_path.join(":")')"

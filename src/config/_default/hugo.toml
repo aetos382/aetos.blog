@@ -8,13 +8,15 @@ enableRobotsTXT = true
 enableGitInfo = true
 cleanDestinationDir = true
 
+theme = 'wangchucheng.com/hugo-eureka'
+
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
 
 [security]
   [security.exec]
-    allow =[ '^asciidoctor$', '^git$', '^go$', '^sass$', '^npx$' ]
+    allow =[ '^asciidoctor$', '^git$', '^go$', '^sass$', '^npx$', '^postcss$' ]
     osEnv = [ '(?i)^(PATH|GEM_PATH)$' ]
 
 [markup]

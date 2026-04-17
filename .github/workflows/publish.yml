@@ -58,6 +58,7 @@ jobs:
         if: false
         run: |
           set -euo pipefail
+          bundle config set bin .bin
           bundle install
           bundle binstubs asciidoctor
 

@@ -35,10 +35,15 @@ jobs:
           cache: false
 
       - uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
-        id: ruby
         with:
           ruby-version: '3.4'
           bundler-cache: true
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.15.0'
+          cache: 'npm'
+          cache-dependency-path: 'src/package-lock.json'
 
       - name: Create bin directory
         run: |
@@ -72,6 +77,8 @@ jobs:
           sass --version | echo "dart-sass: $(cat -)"
           asciidoctor --version | echo "asciidoctor: $(cat -)"
           go version | echo "go: $(cat -)"
+          node --version | echo "node: $(cat -)"
+          npm --version | echo "npm: $(npm -)"
 
       - name: Build
         working-directory: src

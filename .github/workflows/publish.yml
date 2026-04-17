@@ -73,6 +73,7 @@ jobs:
           rm dart-sass.tar.gz
 
       - name: Verify installations
+        working-directory: src
         run: |
           set -euo pipefail
           hugo version | echo "hugo: $(cat -)"

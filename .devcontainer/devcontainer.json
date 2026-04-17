@@ -26,13 +26,13 @@
     "vscode": {
       "extensions": [
         "-golang.go",
-        "-shopify.ruby-lsp",
         "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
+        "Shopify.ruby-extensions-pack",
         "tamasfe.even-better-toml"
       ],
       "settings": {

@@ -19,8 +19,8 @@ theme = 'github-style'
     osEnv = [ '(?i)^(PATH|GEM_PATH)$' ]
 
 [markup]
-  [markup.asciidocext]
-    extensions = ['asciidoctor-diagram']
+  [markup.asciidocExt]
+    extensions = ['asciidoctor-diagram', 'asciidoctor-hello']
     workingFolderCurrent = true
     [markup.asciidocExt.attributes]
       skip-front-matter = 'true'

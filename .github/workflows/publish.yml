@@ -80,6 +80,9 @@ jobs:
           node --version | echo "node: $(cat -)"
           npm --version | echo "npm: $(cat -)"
 
+      - run: npm ci
+        working-directory: src
+
       - name: Build
         working-directory: src
         run: >

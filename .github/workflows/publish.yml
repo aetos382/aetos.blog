@@ -41,13 +41,22 @@ jobs:
       - name: Prepare paths
         run: |
           set -euo pipefail
-          mkdir -p ${GITHUB_WORKSPACE}/bin
-          echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
-
           default_gem_paths="$(ruby -r rubygems -e 'puts Gem.default_path.join(":")')"
           echo "GEM_HOME=${HOME}/.gem" >> $GITHUB_ENV
           echo "GEM_PATH=${HOME}/.gem:${default_gem_paths}" >> $GITHUB_ENV
           echo "${HOME}/.gem/bin" >> $GITHUB_PATH
+
+      - name: Install bundle
+        run: |
+          set -euo pipefail
+          bundle config --global set path.system true
+          bundle install
+
+      - name: Create bin directory
+        run: |
+          set -euo pipefail
+          mkdir -p ${GITHUB_WORKSPACE}/bin
+          echo "${GITHUB_WORKSPACE}/bin/" >> $GITHUB_PATH
 
       - name: Install Hugo
         run: |

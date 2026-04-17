@@ -1,4 +1,0 @@
-[submodule "src/themes/github-style"]
-	path = src/themes/github-style
-	url = https://github.com/aetos382/github-style.git
-	branch = master

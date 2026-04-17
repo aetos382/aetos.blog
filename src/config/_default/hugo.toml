@@ -7,7 +7,6 @@ hasCJKLanguage = true
 enableRobotsTXT = true
 enableGitInfo = true
 cleanDestinationDir = true
-theme = 'github-style'
 
 [caches]
   [caches.images]

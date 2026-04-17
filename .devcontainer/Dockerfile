@@ -31,12 +31,15 @@ RUN mkdir /usr/local/go && \
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
+RUN mkdir -p /home/vscode/.gem
 
 ENV PATH=/usr/local/hugo:/usr/local/dart-sass:/usr/local/ruby/bin:/usr/local/go/bin:$PATH
 ENV GOTOOLCHAIN=local
 ENV REPOSITORY_HASH=${REPOSITORY_HASH}
 
-COPY --chmod=+x [".devcontainer/docker-entrypoint.sh", "/"]
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sleep", "infinity"]
+RUN cat >/etc/profile.d/ruby-gems.sh <<'EOF'
+export GEM_HOME="${HOME}/.gem"
+default_gem_path = "$("/usr/local/ruby/bin/ruby" -r rubygems -e 'puts Gem.default_path.join(":")')"
+export GEM_PATH="${GEM_HOME}:${default_gem_path}"
+export PATH="${GEM_HOME}/bin:${PATH}"
+EOF

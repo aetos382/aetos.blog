@@ -2,4 +2,5 @@ source 'https://rubygems.org'
 
 gem 'asciidoctor'
 gem 'asciidoctor-diagram'
+gem 'asciidoctor-hello', path: 'gems/asciidoctor-hello'
 gem 'rouge'

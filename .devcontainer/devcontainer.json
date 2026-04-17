@@ -10,6 +10,7 @@
   "remoteEnv": {
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "PATH": "${containerWorkspaceFolder}/bin:${containerEnv:PATH}",
     "TZ": "Asia/Tokyo"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",

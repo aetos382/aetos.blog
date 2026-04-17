@@ -41,7 +41,7 @@ jobs:
 
       - run: |
           echo ${{ steps.ruby.outputs.ruby-prefix }}
-          find / -name asciidoctor -type f
+          find / -name asciidoctor -type f 2>/dev/null || true
 
       - name: Prepare paths
         if: false

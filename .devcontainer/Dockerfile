@@ -14,9 +14,14 @@ RUN curl -fqsLS https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.g
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz
 
-ENV PATH=/usr/local/ruby/bin:/usr/local/go/bin:$PATH
-ENV GOTOOLCHAIN=local
-
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
+
+ENV GEM_HOME=/home/vscode/.gem
+ENV GEM_PATH=/home/vscode/.gem
+
+ENV PATH=/usr/local/ruby/bin:/usr/local/go/bin:/home/vscode/.gem/bin:$PATH
+ENV GOTOOLCHAIN=local
+
+RUN

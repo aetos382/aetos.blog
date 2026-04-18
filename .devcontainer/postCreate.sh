@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+WORKSPACE="${WORKSPACE:-/workspaces}"
+
+if [ "$(stat -c '%U' "$WORKSPACE")" = "root" ]; then
+    sudo chown -R "$(id -u):$(id -g)" "$WORKSPACE"
+fi
+
 bundle config set --global path ${HOME}/.bundle
 bundle config set --global bin ${PWD}/src/bin
 

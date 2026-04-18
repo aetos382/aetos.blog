@@ -93,10 +93,4 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
-          command: >
-            deploy
-            --name ${{ vars.CLOUDFLARE_WORKER_PROJECT_NAME }}
-            --compatibility-date ${{ vars.CLOUDFLARE_WORKER_COMPATIBILITY_DATE}}
-            --assets src/public
-            --domain aetos.blog
-
+          command: deploy --config src/wrangler.jsonc

@@ -130,7 +130,6 @@ jobs:
           command: >
             deploy
             --config src/wrangler.jsonc
-            --env production
 
       - name: Deploy preview
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
@@ -142,4 +141,3 @@ jobs:
             versions upload
             --config src/wrangler.jsonc
             --preview-alias pr-${{ github.event.pull_request.number }}
-            --env staging

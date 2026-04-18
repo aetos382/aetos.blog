@@ -83,22 +83,33 @@ jobs:
       - run: npm ci
         working-directory: src
 
+      - name: Set base URL
+        id: base-url
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "value=https://pr-${{ github.event.pull_request.number }}-aetos-blog.aetos.workers.dev" >> $GITHUB_OUTPUT
+          else
+            echo "value=${{ vars.CLOUDFLARE_WORKER_BASE_URL }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build
         working-directory: src
         run: >
           hugo build
-          --baseURL ${{ vars.CLOUDFLARE_WORKER_BASE_URL }}
+          --baseURL ${{ steps.base-url.outputs.value }}
           --environment production
           --minify
 
-      - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
+      - name: Deploy production
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
         if: github.ref == 'refs/heads/main'
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
           command: deploy --config src/wrangler.jsonc
 
-      - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
+      - name: Deploy preview
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
         if: github.event_name == 'pull_request'
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

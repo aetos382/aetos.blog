@@ -117,7 +117,10 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
-          command: deploy --config src/wrangler.jsonc
+          command: >
+            deploy
+            --config src/wrangler.jsonc
+            --env production
 
       - name: Deploy preview
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
@@ -125,4 +128,8 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
-          command: versions upload --config src/wrangler.jsonc --preview-alias pr-${{ github.event.pull_request.number }}
+          command: >
+            versions upload
+            --config src/wrangler.jsonc
+            --preview-alias pr-${{ github.event.pull_request.number }}
+            --env staging

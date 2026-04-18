@@ -96,6 +96,7 @@ jobs:
           command: >
             deploy
             --name ${{ vars.CLOUDFLARE_WORKER_PROJECT_NAME }}
+            --compatibility-date ${{ vars.CLOUDFLARE_WORKER_COMPATIBILITY_DATE}}
             --assets src/public
             --domain aetos.blog
 

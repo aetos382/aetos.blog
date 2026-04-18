@@ -109,6 +109,8 @@ jobs:
 
       - name: Build
         working-directory: src
+        env:
+          HUGO_PARAMS_GITALK_CLIENTSECRET: ${{ secrets.HUGO_PARAMS_GITALK_CLIENTSECRET }}
         run: >
           hugo build
           --baseURL ${{ steps.build-params.outputs.base-url }}

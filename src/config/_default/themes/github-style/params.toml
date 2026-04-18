@@ -7,3 +7,15 @@ rss = true
 avatar = 'images/face-180.png'
 location = 'Saitama, Japan'
 custom_css = ['css/rouge.css']
+enableGitalk = true
+
+[gitalk]
+  clientID = 'Ov23liJZq7hid4IJeMGy'
+  owner = 'aetos382'
+  admin = 'aetos382'
+  repo = 'aetos.blog'
+  labels = 'gitalk'
+  perPage = 10
+  pagerDirection = 'last'
+  createIssueManually = true
+  distractionFreeMode = false

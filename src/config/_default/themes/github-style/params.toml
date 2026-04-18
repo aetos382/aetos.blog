@@ -7,7 +7,7 @@ rss = true
 avatar = '/images/face-180.png'
 headerIcon = '/images/blog-white-32.svg'
 location = 'Saitama, Japan'
-custom_css = ['css/rouge.css']
+custom_css = ['css/syntax-highlight.css']
 enableGitalk = true
 
 [gitalk]

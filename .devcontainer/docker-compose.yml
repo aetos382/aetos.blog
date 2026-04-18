@@ -5,9 +5,6 @@ services:
     image: ghcr.io/aetos382/aetos.blog:latest
     volumes:
       - type: volume
-        source: workspaces
-        target: /workspaces/aetos.blog
-      - type: volume
         source: claude-code-config
         target: /home/vscode/.claude
     depends_on:
@@ -40,5 +37,4 @@ networks:
     internal: true
 
 volumes:
-  workspaces:
   claude-code-config:

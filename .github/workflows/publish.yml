@@ -68,14 +68,14 @@ jobs:
       - name: Install Hugo
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          curl -qfsSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz -o hugo.tar.gz
+          curl --retry 3 --retry-delay 5 -qfsSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz -o hugo.tar.gz
           tar -C ${GITHUB_WORKSPACE}/bin/ -xzf hugo.tar.gz hugo
           rm hugo.tar.gz
 
       - name: Install Dart Sass
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          curl -qfsSL https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz -o dart-sass.tar.gz
+          curl --retry 3 --retry-delay 5 -qfsSL https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz -o dart-sass.tar.gz
           tar -C ${GITHUB_WORKSPACE}/bin/ -xzf dart-sass.tar.gz --strip-components=1
           rm dart-sass.tar.gz
 

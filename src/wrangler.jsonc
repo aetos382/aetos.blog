@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "aetos-blog",
+  "compatibility_date": "2026-04-18",
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "aetos.blog"
+    }
+  ],
+  "workers_dev": false
+}

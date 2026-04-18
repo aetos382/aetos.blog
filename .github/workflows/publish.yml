@@ -3,6 +3,8 @@ name: publish
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
   workflow_dispatch:
 
 permissions:
@@ -90,7 +92,15 @@ jobs:
           --minify
 
       - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
+        if: github.ref == 'refs/heads/main'
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
           command: deploy --config src/wrangler.jsonc
+
+      - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd #v3.15.0
+        if: github.event_name == 'pull_request'
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
+          command: versions upload --config src/wrangler.jsonc --preview-alias pr-${{ github.event.pull_request.number }}

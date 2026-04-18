@@ -25,8 +25,8 @@ cleanDestinationDir = true
       skip-front-matter = 'true'
       source-highlighter = 'rouge'
 
-[params]
-  custom_css = ['css/rouge.css']
+[frontmatter]
+  lastmod = ['lastmod', ':git', ':fileModTime', ':default']
 
 [permalinks]
   post = '/post/:year/:month/:day/:contentbasename'

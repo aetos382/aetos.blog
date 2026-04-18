@@ -17,3 +17,5 @@ class Program
   }
 }
 ----
+
+image::image.png[]

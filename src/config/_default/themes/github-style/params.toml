@@ -1,9 +1,9 @@
-[params]
-  author = 'aetos'
-  github = 'aetos382'
-  twitter = 'aetos382'
-  bluesky = 'aetos.me'
-  lastmod = true
-  rss = true
-  avatar = 'images/face-180.png'
-  custom_css = ['css/rouge.css']
+author = 'aetos'
+github = 'aetos382'
+twitter = 'aetos382'
+bluesky = 'aetos.me'
+lastmod = true
+rss = true
+avatar = 'images/face-180.png'
+location = 'Saitama, Japan'
+custom_css = ['css/rouge.css']

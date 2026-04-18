@@ -29,4 +29,4 @@ cleanDestinationDir = true
   lastmod = ['lastmod', ':git', ':fileModTime', ':default']
 
 [permalinks]
-  post = '/post/:year/:month/:day/:contentbasename'
+  post = '/post/:year/:month/:day/:slug'

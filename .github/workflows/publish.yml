@@ -85,7 +85,7 @@ jobs:
         working-directory: src
         run: >
           hugo build
-          --baseURL ${{ vars.CLOUDFLARE_PAGES_BASE_URL }}
+          --baseURL ${{ vars.CLOUDFLARE_WORKER_BASE_URL }}
           --environment production
           --minify
 

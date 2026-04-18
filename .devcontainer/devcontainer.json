@@ -14,7 +14,7 @@
     "TZ": "Asia/Tokyo",
     "PATH": "${containerWorkspaceFolder}/src/bin:${containerWorkspaceFolder}/src/scripts:${containerEnv:PATH}"
   },
-  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+  "postCreateCommand": "echo $(pwd) && bash .devcontainer/postCreate.sh",
   "customizations": {
     "vscode": {
       "extensions": [

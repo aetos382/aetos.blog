@@ -3,7 +3,6 @@
   "service": "devcontainer",
   "init": true,
   "overrideCommand": true,
-  "workspaceFolder": "/workspaces/aetos.blog",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/powershell:2": {}

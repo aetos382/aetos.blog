@@ -1,2 +1,3 @@
 [[imports]]
-  path = "github.com/aetos382/github-style"
+  path = "github.com/aetos382/hugo-bootstrap-blog"
+  version = "patch-1"

@@ -1,0 +1,21 @@
+enableSearch = true
+
+sidebarPosition = 'right'
+sidebarModules = [
+  'search',
+  'profile',
+  'tags',
+  'recent',
+  'archives',
+  'social'
+]
+
+customCSS = ['/css/syntax-highlight.css']
+
+[author]
+  name = "Aetos"
+  avatar = '/images/face-180.png'
+
+[social]
+  twitter = 'https://twitter.com/aetos382'
+  github = 'https://github.com/aetos382'

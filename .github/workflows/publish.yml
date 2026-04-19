@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   gate:
-    if: github.event_name != 'issue_comment' || (contains(github.event.comment.body, '/publish') && github.event.comment.user.login == 'aetos')
+    if: github.event_name != 'issue_comment' || (contains(github.event.comment.body, '/publish') && github.event.comment.user.login == 'aetos382')
     runs-on: ubuntu-24.04
     permissions:
       issues: write

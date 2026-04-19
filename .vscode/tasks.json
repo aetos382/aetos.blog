@@ -3,21 +3,9 @@
   "tasks": [
     {
       "label": "Hugo: Server",
-      "type": "shell",
-      "command": "hugo-server",
+      "type": "npm",
+      "script": "watch",
       "isBackground": true,
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Web Server is available"
-        }
-      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
@@ -29,22 +17,10 @@
     },
     {
       "label": "Hugo: Build",
-      "type": "shell",
-      "command": "hugo build",
+      "type": "npm",
+      "script": "build",
       "options": {
         "cwd": "${workspaceFolder}/src"
-      },
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": false,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Total in"
-        }
       },
       "presentation": {
         "reveal": "always",
@@ -53,39 +29,14 @@
     },
     {
       "label": "Hugo: Build (production)",
-      "type": "shell",
-      "command": "hugo build --environment production --minify",
+      "type": "npm",
+      "script": "build:prod",
       "options": {
         "cwd": "${workspaceFolder}/src"
-      },
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": false,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Total in"
-        }
       },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
-      }
-    },
-    {
-      "label": "Bundle: Install",
-      "type": "shell",
-      "command": "bundle install",
-      "options": {
-        "cwd": "${workspaceFolder}/src"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
       }
     }
   ]

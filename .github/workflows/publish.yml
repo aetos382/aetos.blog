@@ -255,6 +255,7 @@ jobs:
       - name: Post /publish hint to PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
@@ -276,6 +277,7 @@ jobs:
       - name: Post preview URL to PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           PREVIEW_URL: https://pr-${{ needs.gate.outputs.pr-number }}-aetos-blog.aetos.workers.dev
           PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
         run: |

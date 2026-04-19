@@ -6,6 +6,8 @@ showReadingTime = false
 showAuthor = false
 showShareButtons = true
 
+customCSS = ['/css/syntax-highlight.css']
+
 [[sidebarModules]]
   partial = 'recentPosts'
 

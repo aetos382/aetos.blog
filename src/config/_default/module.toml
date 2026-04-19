@@ -1,2 +1,3 @@
 [[imports]]
-  path = "go.ngs.io/hugo-primer-blog"
+  path = "github.com/aetos382/hugo-primer-blog"
+  version = "patch-customcss"

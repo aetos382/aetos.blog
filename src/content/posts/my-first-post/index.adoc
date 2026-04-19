@@ -2,6 +2,8 @@
 date: '2026-04-16T18:13:39+09:00'
 draft: false
 title: 'My First Post'
+tags: ['sample']
+archives: ['2026-04']
 ---
 = My First Post
 

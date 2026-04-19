@@ -185,12 +185,15 @@ jobs:
 
   deploy-production:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'issue_comment' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          sparse-checkout: src/wrangler.jsonc
+          sparse-checkout: |
+            src/wrangler.jsonc
+            src/package.json
+            src/package-lock.json
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -210,9 +213,7 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_WORKER_DEPLOY_API_TOKEN }}
-          command: >
-            deploy
-            --config src/wrangler.jsonc
+          command: deploy --config src/wrangler.jsonc
 
 
   deploy-preview:
@@ -222,7 +223,10 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          sparse-checkout: src/wrangler.jsonc
+          sparse-checkout: |
+            src/wrangler.jsonc
+            src/package.json
+            src/package-lock.json
           ref: ${{ format('refs/pull/{0}/head', needs.gate.outputs.pr-number) }}
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0

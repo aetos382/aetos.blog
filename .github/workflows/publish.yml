@@ -1,3 +1,11 @@
+# ビルド・デプロイワークフロー
+#
+# トリガーと動作:
+#   push (main)        → 本番ビルド＆デプロイ
+#   pull_request       → ビルドチェックのみ（エラー確認）
+#   issue_comment      → PR コメントに /publish と書くとプレビューデプロイ
+#                        （aetos382 のみ実行可能）
+#   workflow_dispatch  → 手動実行（本番ビルド＆デプロイ）
 name: publish
 
 on:

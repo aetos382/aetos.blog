@@ -2,7 +2,7 @@
 #
 # トリガーと動作:
 #   push (main)        → 本番ビルド＆デプロイ
-#   pull_request       → ビルドチェックのみ（エラー確認）
+#   pull_request       → ビルドチェック＆「/publish でプレビュー可」ヒントを PR に投稿
 #   issue_comment      → PR コメントに /publish と書くとプレビューデプロイ
 #                        （aetos382 のみ実行可能）
 #   workflow_dispatch  → 手動実行（本番ビルド＆デプロイ）
@@ -87,6 +87,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          lfs: true
           ref: ${{ needs.gate.outputs.pr-number != '' && format('refs/pull/{0}/head', needs.gate.outputs.pr-number) || '' }}
 
       - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
@@ -139,6 +140,8 @@ jobs:
         working-directory: src
         run: |
           set -euo pipefail
+          git version | echo "git: $(cat -)"
+          git lfs version | echo "git lfs: $(cat -)"
           hugo version | echo "hugo: $(cat -)"
           sass --version | echo "dart-sass: $(cat -)"
           asciidoctor --version | echo "asciidoctor: $(cat -)"
@@ -210,6 +213,7 @@ jobs:
             deploy
             --config src/wrangler.jsonc
 
+
   deploy-preview:
     needs: [gate, build]
     if: needs.gate.outputs.is-preview == 'true'
@@ -243,6 +247,32 @@ jobs:
             --config src/wrangler.jsonc
             --preview-alias pr-${{ needs.gate.outputs.pr-number }}
 
+  post-publish-hint:
+    needs: gate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Post /publish hint to PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          MARKER='<!-- publish-hint -->'
+          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
+          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
+            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
+
+          ${MARKER}
+          > コメントに \`/publish\` と書くとプレビューデプロイできます。
+          ${MARKER}"
+          fi
+
+  post-preview-url:
+    needs: [gate, deploy-preview]
+    if: always() && needs.gate.outputs.is-preview == 'true' && needs.deploy-preview.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
       - name: Post preview URL to PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -253,9 +283,9 @@ jobs:
           MARKER='<!-- preview-url -->'
           SECTION="${MARKER}
           :rocket: **Preview:** ${PREVIEW_URL}
-          > コメントに \`/publish\` と書くと再デプロイできます。
+          > 再デプロイするにはコメントに \`/publish\` と書いてください。
           ${MARKER}"
-          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
+          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
           if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
             gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
 

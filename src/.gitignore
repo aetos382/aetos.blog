@@ -2,6 +2,8 @@ public/
 resources/
 bin/
 node_modules/
+_vendor/
+packages/
 
 *.local.*
 .hugo_build.lock

@@ -4,5 +4,8 @@
     "wrangler": "^4.83.0"
   },
   "scripts": {
+    "build": "bundle install && npm install && hugo build",
+    "build:prod": "bundle install && npm install && hugo build --environment production --minify",
+    "watch": "bundle install && npm install && hugo server"
   }
 }

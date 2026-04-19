@@ -248,6 +248,25 @@ jobs:
             --config src/wrangler.jsonc
             --preview-alias pr-${{ needs.gate.outputs.pr-number }}
 
+      - name: Post preview URL to PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PREVIEW_URL: https://pr-${{ needs.gate.outputs.pr-number }}-aetos-blog.aetos.workers.dev
+          PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
+        run: |
+          set -euo pipefail
+          MARKER='<!-- preview-url -->'
+          SECTION="${MARKER}
+          :rocket: **Preview:** ${PREVIEW_URL}
+          ${MARKER}"
+          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
+          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
+            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
+
+          ${SECTION}"
+          fi
+
   post-publish-hint:
     needs: gate
     if: github.event_name == 'pull_request'
@@ -270,27 +289,3 @@ jobs:
           ${MARKER}"
           fi
 
-  post-preview-url:
-    needs: [gate, deploy-preview]
-    if: always() && needs.gate.outputs.is-preview == 'true' && needs.deploy-preview.result == 'success'
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Post preview URL to PR
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          PREVIEW_URL: https://pr-${{ needs.gate.outputs.pr-number }}-aetos-blog.aetos.workers.dev
-          PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
-        run: |
-          set -euo pipefail
-          MARKER='<!-- preview-url -->'
-          SECTION="${MARKER}
-          :rocket: **Preview:** ${PREVIEW_URL}
-          > 再デプロイするにはコメントに \`/publish\` と書いてください。
-          ${MARKER}"
-          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
-            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
-
-          ${SECTION}"
-          fi

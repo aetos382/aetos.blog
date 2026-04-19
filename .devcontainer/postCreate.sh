@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+git lfs install
+
 bundle config set --global path ${HOME}/.bundle
 bundle config set --global bin ${PWD}/src/bin
 

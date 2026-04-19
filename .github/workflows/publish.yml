@@ -291,6 +291,7 @@ jobs:
             gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
 
           ${MARKER}
+          ---
           コメントに \`/publish\` と書くとプレビューデプロイできます。
           ${MARKER}"
           fi

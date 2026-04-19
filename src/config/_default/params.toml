@@ -1,0 +1,22 @@
+sidebar = true
+recentPostsCount = 6
+defaultTheme = 'auto'
+dateFormat = '2006-01-02'
+showReadingTime = false
+showAuthor = false
+showShareButtons = true
+
+customCSS = ['/css/syntax-highlight.css']
+
+[[sidebarModules]]
+  partial = 'recentPosts'
+
+[[sidebarModules]]
+  partial = 'tags'
+
+[[sidebarModules]]
+  partial = 'archive'
+
+[social]
+  x = 'aetos382'
+  github = 'aetos382'

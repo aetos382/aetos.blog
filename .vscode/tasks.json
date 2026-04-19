@@ -6,18 +6,6 @@
       "type": "npm",
       "script": "watch",
       "isBackground": true,
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Web Server is available"
-        }
-      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
@@ -34,18 +22,6 @@
       "options": {
         "cwd": "${workspaceFolder}/src"
       },
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": false,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Total in"
-        }
-      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
@@ -57,18 +33,6 @@
       "script": "build:prod",
       "options": {
         "cwd": "${workspaceFolder}/src"
-      },
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^(ERROR|WARN)\\s+(.*)$",
-          "severity": 1,
-          "message": 2
-        },
-        "background": {
-          "activeOnStart": false,
-          "beginsPattern": "^Start building sites",
-          "endsPattern": "^Total in"
-        }
       },
       "presentation": {
         "reveal": "always",

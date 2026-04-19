@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   gate:
-    if: github.event_name != 'issue_comment' || contains(github.event.comment.body, '/rebuild')
+    if: github.event_name != 'issue_comment' || (contains(github.event.comment.body, '/rebuild') && github.event.comment.user.login == 'aetos')
     runs-on: ubuntu-24.04
     permissions:
       issues: write
@@ -37,6 +37,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           IS_PR_COMMENT: ${{ github.event.issue.pull_request.url != '' }}
           COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
         run: |
           set -euo pipefail
           case "$EVENT_NAME" in
@@ -57,7 +58,7 @@ jobs:
               fi
               ;;
             issue_comment)
-              if [[ "$IS_PR_COMMENT" == "true" ]] && [[ "$ISSUE_LABELS" == *"preview"* ]] && [[ "$COMMENT_BODY" == *"/rebuild"* ]]; then
+              if [[ "$IS_PR_COMMENT" == "true" ]] && [[ "$ISSUE_LABELS" == *"preview"* ]] && [[ "$COMMENT_BODY" == *"/rebuild"* ]] && [[ "$COMMENT_AUTHOR" == "aetos" ]]; then
                 echo "proceed=true"  >> "$GITHUB_OUTPUT"
                 echo "is-preview=true" >> "$GITHUB_OUTPUT"
                 echo "pr-number=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
@@ -220,6 +221,7 @@ jobs:
           MARKER='<!-- preview-url -->'
           SECTION="${MARKER}
           :rocket: **Preview:** ${PREVIEW_URL}
+          > コメントに \`/rebuild\` と書くと再ビルドできます。
           ${MARKER}"
           CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
           if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then

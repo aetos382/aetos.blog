@@ -10,6 +10,8 @@ sidebarModules = [
   'social'
 ]
 
+customCSS = ['/css/syntax-highlight.css']
+
 [author]
   name = "Aetos"
   avatar = '/images/face-180.png'

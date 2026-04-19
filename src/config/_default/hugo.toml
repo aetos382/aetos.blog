@@ -34,3 +34,6 @@ cleanDestinationDir = true
 
 [taxonomies]
   tag = 'tags'
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']

@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 concurrency:
   group: "pages"
@@ -143,3 +144,22 @@ jobs:
             versions upload
             --config src/wrangler.jsonc
             --preview-alias pr-${{ github.event.pull_request.number }}
+
+      - name: Post preview URL to PR
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'preview')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}-aetos-blog.aetos.workers.dev
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          MARKER='<!-- preview-url -->'
+          SECTION="${MARKER}
+          :rocket: **Preview:** ${PREVIEW_URL}
+          ${MARKER}"
+          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
+          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
+            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
+
+          ${SECTION}"
+          fi

@@ -3,6 +3,7 @@
 # トリガーと動作:
 #   push (main)        → 本番ビルド＆デプロイ
 #   pull_request       → ビルドチェック＆「/publish でプレビュー可」ヒントを PR に投稿
+#                        preview ラベルを付けるとプレビューデプロイ
 #   issue_comment      → PR コメントに /publish と書くとプレビューデプロイ
 #                        （aetos382 のみ実行可能）
 #   workflow_dispatch  → 手動実行（本番ビルド＆デプロイ）
@@ -12,7 +13,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [ opened, synchronize, reopened, labeled ]
   issue_comment:
     types: [ created ]
   workflow_dispatch:
@@ -34,33 +35,69 @@ jobs:
       pull-requests: write
     outputs:
       proceed: ${{ steps.check.outputs.proceed }}
-      is-preview: ${{ steps.check.outputs.is-preview }}
+      target: ${{ steps.check.outputs.target }}
       pr-number: ${{ steps.check.outputs.pr-number }}
     steps:
-      - id: check
+      - id: parse
         env:
           EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HAS_PREVIEW: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_HAS_PREVIEW: ${{ contains(github.event.issue.labels.*.name, 'preview') }}
           IS_PR_COMMENT: ${{ github.event.issue.pull_request.url != '' }}
           COMMENT_BODY: ${{ github.event.comment.body }}
           COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
         run: |
           set -euo pipefail
           case "$EVENT_NAME" in
-            push|workflow_dispatch|pull_request)
-              echo "proceed=true"    >> "$GITHUB_OUTPUT"
-              echo "is-preview=false" >> "$GITHUB_OUTPUT"
-              echo "pr-number="      >> "$GITHUB_OUTPUT"
+            pull_request)
+              echo "has-preview-label=$PR_HAS_PREVIEW"  >> "$GITHUB_OUTPUT"
+              echo "pr-number=$PR_NUMBER"                >> "$GITHUB_OUTPUT"
+              echo "is-valid-publish-comment=false"      >> "$GITHUB_OUTPUT"
               ;;
             issue_comment)
+              echo "has-preview-label=$ISSUE_HAS_PREVIEW" >> "$GITHUB_OUTPUT"
+              echo "pr-number=$ISSUE_NUMBER"               >> "$GITHUB_OUTPUT"
               if [[ "$IS_PR_COMMENT" == "true" ]] && [[ "$COMMENT_BODY" == *"/publish"* ]] && [[ "$COMMENT_AUTHOR" == "aetos382" ]]; then
-                echo "proceed=true"   >> "$GITHUB_OUTPUT"
-                echo "is-preview=true" >> "$GITHUB_OUTPUT"
-                echo "pr-number=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
+                echo "is-valid-publish-comment=true"  >> "$GITHUB_OUTPUT"
               else
-                echo "proceed=false"   >> "$GITHUB_OUTPUT"
-                echo "is-preview=false" >> "$GITHUB_OUTPUT"
-                echo "pr-number="      >> "$GITHUB_OUTPUT"
+                echo "is-valid-publish-comment=false" >> "$GITHUB_OUTPUT"
+              fi
+              ;;
+            *)
+              echo "has-preview-label=false"        >> "$GITHUB_OUTPUT"
+              echo "pr-number="                      >> "$GITHUB_OUTPUT"
+              echo "is-valid-publish-comment=false"  >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HAS_PREVIEW_LABEL: ${{ steps.parse.outputs.has-preview-label }}
+          IS_VALID_PUBLISH_COMMENT: ${{ steps.parse.outputs.is-valid-publish-comment }}
+          PR_NUMBER: ${{ steps.parse.outputs.pr-number }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_NAME" in
+            push|workflow_dispatch)
+              echo "proceed=true"          >> "$GITHUB_OUTPUT"
+              echo "target=production"     >> "$GITHUB_OUTPUT"
+              echo "pr-number="            >> "$GITHUB_OUTPUT"
+              ;;
+            pull_request)
+              if [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
+                { echo "proceed=true"; echo "target=preview"; echo "pr-number=$PR_NUMBER"; } >> "$GITHUB_OUTPUT"
+              else
+                { echo "proceed=false"; echo "target=none"; echo "pr-number="; } >> "$GITHUB_OUTPUT"
+              fi
+              ;;
+            issue_comment)
+              if [[ "$IS_VALID_PUBLISH_COMMENT" == "true" ]] && [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
+                { echo "proceed=true"; echo "target=preview"; echo "pr-number=$PR_NUMBER"; } >> "$GITHUB_OUTPUT"
+              else
+                { echo "proceed=false"; echo "target=none"; echo "pr-number="; } >> "$GITHUB_OUTPUT"
               fi
               ;;
           esac
@@ -157,7 +194,7 @@ jobs:
       - name: Set build params
         id: build-params
         run: |
-          if [[ "${{ needs.gate.outputs.is-preview }}" == "true" ]]; then
+          if [[ "${{ needs.gate.outputs.target }}" == "preview" ]]; then
             echo "base-url=https://pr-${{ needs.gate.outputs.pr-number }}-aetos-blog.aetos.workers.dev" >> $GITHUB_OUTPUT
             echo "environment=staging" >> $GITHUB_OUTPUT
             echo "minify=false" >> $GITHUB_OUTPUT
@@ -184,8 +221,8 @@ jobs:
           if-no-files-found: error
 
   deploy-production:
-    needs: build
-    if: github.event_name != 'issue_comment' && github.ref == 'refs/heads/main'
+    needs: [gate, build]
+    if: needs.gate.outputs.target == 'production'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -219,7 +256,7 @@ jobs:
 
   deploy-preview:
     needs: [gate, build]
-    if: needs.gate.outputs.is-preview == 'true'
+    if: needs.gate.outputs.target == 'preview'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -275,7 +312,7 @@ jobs:
 
   post-publish-hint:
     needs: gate
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'labeled'
     runs-on: ubuntu-24.04
     steps:
       - name: Post /publish hint to PR

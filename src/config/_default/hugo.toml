@@ -29,4 +29,8 @@ cleanDestinationDir = true
   lastmod = ['lastmod', ':git', ':fileModTime', ':default']
 
 [permalinks]
-  post = '/post/:year/:month/:day/:slug'
+  post = '/posts/:year/:month/:day/:slug'
+  tags = '/tags/:slug/'
+
+[taxonomies]
+  tag = 'tags'

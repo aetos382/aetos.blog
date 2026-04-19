@@ -1,2 +1,2 @@
 [[imports]]
-  path = "github.com/aetos382/github-style"
+  path = "github.com/ngs/hugo-bootstrap-blog"

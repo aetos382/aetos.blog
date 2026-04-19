@@ -3,8 +3,8 @@
   "tasks": [
     {
       "label": "Hugo: Server",
-      "type": "shell",
-      "command": "hugo-server",
+      "type": "npm",
+      "script": "watch",
       "isBackground": true,
       "problemMatcher": {
         "pattern": {
@@ -29,8 +29,8 @@
     },
     {
       "label": "Hugo: Build",
-      "type": "shell",
-      "command": "hugo build",
+      "type": "npm",
+      "script": "build",
       "options": {
         "cwd": "${workspaceFolder}/src"
       },
@@ -53,8 +53,8 @@
     },
     {
       "label": "Hugo: Build (production)",
-      "type": "shell",
-      "command": "hugo build --environment production --minify",
+      "type": "npm",
+      "script": "build:prod",
       "options": {
         "cwd": "${workspaceFolder}/src"
       },
@@ -73,19 +73,6 @@
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
-      }
-    },
-    {
-      "label": "Bundle: Install",
-      "type": "shell",
-      "command": "bundle install",
-      "options": {
-        "cwd": "${workspaceFolder}/src"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
       }
     }
   ]

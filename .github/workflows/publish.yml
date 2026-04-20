@@ -257,7 +257,6 @@ jobs:
       pull-requests: write
     concurrency:
       group: "edit-pr-description-${{ github.run_id }}"
-      cancel-in-progress: true
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -307,7 +306,7 @@ jobs:
           TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
 
           BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-          if ! echo "$BODY" | grep -q "$MARKER_HINT_START"; then
+          if ! echo "$BODY" | grep -q "$MARKER_PREVIEW_START"; then
             BODY="${BODY}\n---\n${TEMPLATE}"
           fi
           BODY=${BODY/"${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"/"${MARKER_PREVIEW_START}${PREVIEW_CONTENT}${MARKER_PREVIEW_END}"}
@@ -321,7 +320,6 @@ jobs:
       pull-requests: write
     concurrency:
       group: "edit-pr-description-${{ github.run_id }}"
-      cancel-in-progress: true
     steps:
       - name: Post /publish hint to PR
         env:
@@ -334,7 +332,7 @@ jobs:
           MARKER_HINT_END='<!-- /publish-hint -->'
           MARKER_PREVIEW_START='<!-- preview-url -->'
           MARKER_PREVIEW_END='<!-- /preview-url -->'
-          HINT_CONTENT="コメントに \`/publish\` と書くとプレビューデプロイできます。"
+          HINT_CONTENT='コメントに `/publish` と書くとプレビューデプロイできます。'
           TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
 
           BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')

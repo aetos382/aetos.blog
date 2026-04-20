@@ -271,14 +271,12 @@ jobs:
           echo ":rocket: [Preview URL](${PREVIEW_URL})" >> "$GITHUB_STEP_SUMMARY"
 
           if [[ -n "$PR_NUMBER" ]]; then
-            MARKER_START='<!-- preview-url -->'
-            MARKER_END='<!-- /preview-url -->'
+            MARKER='<!-- preview-url -->'
             CONTENT=":rocket: [Preview URL](${PREVIEW_URL})"
 
             BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-            if ! echo "$BODY" | grep -q "$MARKER_START"; then
-              BODY=$(printf '%s\n\n%s' "$BODY" "${MARKER_START}${MARKER_END}")
+            if ! echo "$BODY" | grep -q "$MARKER"; then
+              BODY="${BODY}\n\n---\n\n${CONTENT}\n${MARKER}"
+              gh pr edit "$PR_NUMBER" --body "${BODY}"
             fi
-            BODY=${BODY/"${MARKER_START}${MARKER_END}"/"${MARKER_START}${CONTENT}${MARKER_END}"}
-            gh pr edit "$PR_NUMBER" --body "${BODY}"
           fi

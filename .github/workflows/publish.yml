@@ -268,12 +268,12 @@ jobs:
           PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
         run: |
           set -euo pipefail
-          echo ":rocket: ${PREVIEW_URL}" >> "$GITHUB_STEP_SUMMARY"
+          echo ":rocket: [Preview URL](${PREVIEW_URL})" >> "$GITHUB_STEP_SUMMARY"
 
           if [[ -n "$PR_NUMBER" ]]; then
             MARKER_START='<!-- preview-url -->'
             MARKER_END='<!-- /preview-url -->'
-            CONTENT=":rocket: ${PREVIEW_URL}"
+            CONTENT=":rocket: [Preview URL](${PREVIEW_URL})"
 
             BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
             if ! echo "$BODY" | grep -q "$MARKER_START"; then

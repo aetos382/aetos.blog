@@ -303,11 +303,11 @@ jobs:
           MARKER_PREVIEW_START='<!-- preview-url -->'
           MARKER_PREVIEW_END='<!-- /preview-url -->'
           PREVIEW_CONTENT=":rocket: ${PREVIEW_URL}"
-          TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
+          TEMPLATE=$(printf '%s\n---\n%s' "${MARKER_HINT_START}${MARKER_HINT_END}" "${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}")
 
           BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
           if ! echo "$BODY" | grep -q "$MARKER_PREVIEW_START"; then
-            BODY="${BODY}\n---\n${TEMPLATE}"
+            BODY=$(printf '%s\n---\n%s' "$BODY" "$TEMPLATE")
           fi
           BODY=${BODY/"${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"/"${MARKER_PREVIEW_START}${PREVIEW_CONTENT}${MARKER_PREVIEW_END}"}
           gh pr edit "$PR_NUMBER" --body "${BODY}"
@@ -333,11 +333,11 @@ jobs:
           MARKER_PREVIEW_START='<!-- preview-url -->'
           MARKER_PREVIEW_END='<!-- /preview-url -->'
           HINT_CONTENT='コメントに `/publish` と書くとプレビューデプロイできます。'
-          TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
+          TEMPLATE=$(printf '%s\n---\n%s' "${MARKER_HINT_START}${MARKER_HINT_END}" "${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}")
 
           BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
           if ! echo "$BODY" | grep -q "$MARKER_HINT_START"; then
-            BODY="${BODY}\n---\n${TEMPLATE}"
+            BODY=$(printf '%s\n---\n%s' "$BODY" "$TEMPLATE")
           fi
           BODY=${BODY/"${MARKER_HINT_START}${MARKER_HINT_END}"/"${MARKER_HINT_START}${HINT_CONTENT}${MARKER_HINT_END}"}
           gh pr edit "$PR_NUMBER" --body "${BODY}"

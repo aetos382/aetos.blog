@@ -227,8 +227,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       pull-requests: write
-    concurrency:
-      group: "edit-pr-description-${{ github.run_id }}"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -262,8 +260,7 @@ jobs:
             --config wrangler.jsonc
             --preview-alias ${{ needs.gate.outputs.branch-alias }}
 
-      - name: Post preview URL to PR
-        if: needs.gate.outputs.pr-number != ''
+      - name: Post preview URL
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -271,13 +268,17 @@ jobs:
           PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
         run: |
           set -euo pipefail
-          MARKER_START='<!-- preview-url -->'
-          MARKER_END='<!-- /preview-url -->'
-          CONTENT=":rocket: ${PREVIEW_URL}"
+          echo ":rocket: ${PREVIEW_URL}" >> "$GITHUB_STEP_SUMMARY"
 
-          BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-          if ! echo "$BODY" | grep -q "$MARKER_START"; then
-            BODY=$(printf '%s\n\n---\n%s' "$BODY" "${MARKER_START}${MARKER_END}")
+          if [[ -n "$PR_NUMBER" ]]; then
+            MARKER_START='<!-- preview-url -->'
+            MARKER_END='<!-- /preview-url -->'
+            CONTENT=":rocket: ${PREVIEW_URL}"
+
+            BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
+            if ! echo "$BODY" | grep -q "$MARKER_START"; then
+              BODY=$(printf '%s\n\n---\n%s' "$BODY" "${MARKER_START}${MARKER_END}")
+            fi
+            BODY=${BODY/"${MARKER_START}${MARKER_END}"/"${MARKER_START}${CONTENT}${MARKER_END}"}
+            gh pr edit "$PR_NUMBER" --body "${BODY}"
           fi
-          BODY=${BODY/"${MARKER_START}${MARKER_END}"/"${MARKER_START}${CONTENT}${MARKER_END}"}
-          gh pr edit "$PR_NUMBER" --body "${BODY}"

@@ -19,7 +19,6 @@
     "PATH": "${containerWorkspaceFolder}/src/bin:${containerEnv:PATH}"
   },
   "postCreateCommand": "bash ${containerWorkspaceFolder}/.devcontainer/postCreate.sh",
-  "forwardPorts": [8976],
   "customizations": {
     "vscode": {
       "extensions": [

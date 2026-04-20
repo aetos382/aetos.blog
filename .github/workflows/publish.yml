@@ -276,7 +276,7 @@ jobs:
 
             BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
             if ! echo "$BODY" | grep -q "$MARKER"; then
-              BODY="${BODY}\n\n---\n\n${CONTENT}\n${MARKER}"
+              BODY=$(printf '%s\n\n---\n\n%s\n%s' "$BODY" "$CONTENT" "$MARKER")
               gh pr edit "$PR_NUMBER" --body "${BODY}"
             fi
           fi

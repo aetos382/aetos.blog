@@ -20,11 +20,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   gate:
@@ -258,6 +253,11 @@ jobs:
     needs: [gate, build]
     if: needs.gate.outputs.target == 'preview'
     runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: write
+    concurrency:
+      group: "edit-pr-description-${{ github.run_id }}"
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -299,37 +299,47 @@ jobs:
           PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
         run: |
           set -euo pipefail
-          MARKER='<!-- preview-url -->'
-          SECTION="${MARKER}
-          :rocket: **Preview:** ${PREVIEW_URL}
-          ${MARKER}"
-          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
-            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
+          MARKER_HINT_START='<!-- publish-hint -->'
+          MARKER_HINT_END='<!-- /publish-hint -->'
+          MARKER_PREVIEW_START='<!-- preview-url -->'
+          MARKER_PREVIEW_END='<!-- /preview-url -->'
+          PREVIEW_CONTENT=":rocket: ${PREVIEW_URL}"
+          TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
 
-          ${SECTION}"
+          BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
+          if ! echo "$BODY" | grep -q "$MARKER_HINT_START"; then
+            BODY="${BODY}\n---\n${TEMPLATE}"
           fi
+          BODY=${BODY/"${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"/"${MARKER_PREVIEW_START}${PREVIEW_CONTENT}${MARKER_PREVIEW_END}"}
+          gh pr edit "$PR_NUMBER" --body "${BODY}"
 
   post-publish-hint:
     needs: gate
-    if: github.event_name == 'pull_request' && github.event.action != 'labeled'
+    if: needs.gate.outputs.target == 'preview'
     runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: write
+    concurrency:
+      group: "edit-pr-description-${{ github.run_id }}"
+      cancel-in-progress: true
     steps:
       - name: Post /publish hint to PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ needs.gate.outputs.pr-number }}
         run: |
           set -euo pipefail
-          MARKER='<!-- publish-hint -->'
-          CURRENT_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
-          if ! echo "$CURRENT_BODY" | grep -qF "$MARKER"; then
-            gh pr edit "$PR_NUMBER" --body "${CURRENT_BODY}
+          MARKER_HINT_START='<!-- publish-hint -->'
+          MARKER_HINT_END='<!-- /publish-hint -->'
+          MARKER_PREVIEW_START='<!-- preview-url -->'
+          MARKER_PREVIEW_END='<!-- /preview-url -->'
+          HINT_CONTENT="コメントに \`/publish\` と書くとプレビューデプロイできます。"
+          TEMPLATE="${MARKER_HINT_START}${MARKER_HINT_END}\n---\n${MARKER_PREVIEW_START}${MARKER_PREVIEW_END}"
 
-          ${MARKER}
-          ---
-          コメントに \`/publish\` と書くとプレビューデプロイできます。
-          ${MARKER}"
+          BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body // ""')
+          if ! echo "$BODY" | grep -q "$MARKER_HINT_START"; then
+            BODY="${BODY}\n---\n${TEMPLATE}"
           fi
-
+          BODY=${BODY/"${MARKER_HINT_START}${MARKER_HINT_END}"/"${MARKER_HINT_START}${HINT_CONTENT}${MARKER_HINT_END}"}
+          gh pr edit "$PR_NUMBER" --body "${BODY}"

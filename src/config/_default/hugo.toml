@@ -31,3 +31,6 @@ cleanDestinationDir = true
 [permalinks]
   [permalinks.page]
     post = '/post/:year/:month/:day/:slug'
+
+[taxonomies]
+  tags = 'tags'

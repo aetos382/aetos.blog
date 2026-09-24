@@ -10,6 +10,7 @@
       "Edit(.astro/**)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "hooks": {
     "SessionStart": [
       {
@@ -37,7 +38,6 @@
   },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true,
@@ -58,6 +58,5 @@
         "path": "./.claude/marketplace"
       }
     }
-  },
-  "enableAllProjectMcpServers": true
+  }
 }

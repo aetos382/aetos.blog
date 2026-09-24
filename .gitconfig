@@ -5,3 +5,7 @@
 [hook "block-commit-to-main"]
   event = pre-commit
   command = bash .githooks/block-commit-to-main.sh
+
+[hook "validate-renovate-config"]
+  event = pre-commit
+  command = bash .githooks/validate-renovate-config.sh

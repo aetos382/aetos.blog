@@ -14,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       # Kroki server used to render diagrams in AsciiDoc documents at build time.
-      # TODO: Dependabot does not update images in `services`, so keep these tags in sync with
-      # compose.yaml manually. Consider starting Kroki from compose.yaml instead, or using Renovate.
+      # Renovate updates these tags together with compose.yaml (the "Kroki" group in renovate.json).
       kroki:
         image: yuzutech/kroki:0.32.1
         env:

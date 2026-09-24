@@ -3,8 +3,9 @@
 # ベースイメージには curl と tar (xz 対応) が入っているため、apt-get の実行は不要。
 set -euo pipefail
 
-# TODO: バージョンを上げても気づく手段がない。Dependabot は対応できないので、
-# 追従させるなら Renovate の custom regex manager を導入する。
+# バージョンは Renovate が更新する（renovate.json の customManagers）。
+# SHA256 は Renovate では更新されないので、Renovate の PR で手で書き換える。
+# renovate: datasource=github-releases depName=koalaman/shellcheck
 SHELLCHECK_VERSION='v0.11.0'
 
 # GitHub のリリース API が算出した sha256 ダイジェスト。ダウンロードの破損を検出するために使う。

@@ -1,0 +1,15 @@
+{
+  "name": "astro-site",
+  "owner": {
+    "name": "aetos",
+    "url": "https://github.com/aetos382"
+  },
+  "description": "このリポジトリ専用の Claude Code プラグイン",
+  "plugins": [
+    {
+      "name": "lsp",
+      "source": "./plugins/lsp",
+      "description": "TypeScript / JavaScript / Astro の language server をプロジェクトの node_modules から起動する"
+    }
+  ]
+}

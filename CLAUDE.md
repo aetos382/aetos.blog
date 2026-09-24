@@ -11,6 +11,7 @@ docker compose up --detach --wait  # Kroki を起動（dev / build の前提。d
 ## 構成
 
 - `src/asciidoctor/` は astro-asciidoc の `extensions` に渡す Asciidoctor 拡張、`src/integrations/` は `astro.config.mjs` から登録する Astro 統合の置き場所。同じ機能の部品が両方にある場合は同名にする（例: `blog-images.js`）。
+- `.claude/marketplace/`: このリポジトリ専用の Claude Code プラグインの marketplace。`lsp` プラグインは TypeScript / JavaScript / Astro の language server を `node_modules` から起動する（`npm ci` 済みであることが前提）。
 - `src/asciidoctor/kroki.js`: asciidoctor-kroki を astro-asciidoc に登録するためのアダプター。図の取得に失敗したらビルドを失敗させる。インライン SVG の id が図どうしで衝突しないよう、図ごとに接頭辞（`kroki-<n>-`）を付けて書き換える（Kroki の Mermaid は id が `container` 固定のため）。
 
 ## 注意点

@@ -1,0 +1,9 @@
+{
+  "name": "lsp",
+  "version": "1.0.0",
+  "description": "TypeScript / JavaScript / Astro の language server をプロジェクトの node_modules から起動する",
+  "author": {
+    "name": "aetos",
+    "url": "https://github.com/aetos382"
+  }
+}

@@ -28,6 +28,7 @@
   "remoteUser": "vscode",
   "updateContentCommand": "bash .devcontainer/update-content.sh",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "docker compose up --detach --wait",
   "waitFor": "postCreateCommand",
   "customizations": {
     "vscode": {
@@ -36,6 +37,7 @@
         "asciidoctor.asciidoctor-vscode",
         "astro-build.astro-vscode",
         "dbaeumer.vscode-eslint",
+        "docker.docker",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "github.vscode-github-actions",
@@ -45,6 +47,11 @@
         "unifiedjs.vscode-mdx"
       ],
       "settings": {
+        "asciidoc.extensions.enableKroki": true,
+        "asciidoc.extensions.kroki.serverUrl": "http://localhost:8000",
+        "asciidoc.preview.asciidoctorAttributes": {
+          "kroki-default-options": "inline"
+        },
         "files.eol": "\n",
         "shellcheck.executablePath": "/usr/local/bin/shellcheck"
       }

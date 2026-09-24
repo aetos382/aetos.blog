@@ -23,3 +23,13 @@ updates:
         update-types:
           - "minor"
           - "patch"
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      kroki:
+        patterns:
+          - "yuzutech/kroki*"

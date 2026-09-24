@@ -7,8 +7,16 @@ import asciidoc from 'astro-asciidoc';
 
 const asciidocConfig = asciidoc({
   options: {
-    safe: 'server'
-  }
+    safe: 'server',
+    attributes: {
+      // Fetch diagrams from the Kroki server at build time and embed them as data URIs.
+      'kroki-server-url': process.env.KROKI_SERVER_URL ?? 'http://localhost:8000',
+      'kroki-default-format': 'svg',
+      'kroki-default-options': 'inline',
+    },
+  },
+  // Extensions are imported from inside astro-asciidoc, so pass absolute URLs.
+  extensions: [new URL('./src/asciidoctor/kroki.js', import.meta.url).href],
 });
 
 // https://astro.build/config

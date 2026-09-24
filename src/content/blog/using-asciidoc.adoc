@@ -16,3 +16,16 @@ console.log('Hello, AsciiDoc!');
 ----
 
 NOTE: This is an admonition block.
+
+== Diagram
+
+[graphviz]
+....
+digraph G { Hello -> World }
+....
+
+[mermaid]
+....
+graph LR
+  A --> B
+....

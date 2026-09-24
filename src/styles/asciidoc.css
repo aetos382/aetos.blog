@@ -1,0 +1,89 @@
+/*
+  Styles for the HTML that Asciidoctor generates for blog posts.
+  global.css only styles plain elements, so the Asciidoctor block classes are styled here.
+ */
+
+/* Blocks */
+.sectionbody > *,
+#preamble .sectionbody > * {
+	margin-bottom: 1.5em;
+}
+.sect1 + .sect1 {
+	margin-top: 2em;
+}
+.prose .sectionbody :is(p, pre):last-child {
+	margin-bottom: 0;
+}
+
+/* Block titles (`.Title` above a block) */
+.listingblock > .title,
+.literalblock > .title,
+.imageblock > .title,
+.exampleblock > .title {
+	margin-bottom: 0.25em;
+	color: rgb(var(--gray));
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+/* Listing and literal blocks */
+.listingblock pre,
+.literalblock pre {
+	margin: 0;
+	padding: 1em 1.25em;
+	overflow-x: auto;
+	background-color: rgb(var(--gray-light));
+	font-size: 0.8em;
+	line-height: 1.5;
+}
+
+/* Admonition blocks (NOTE, TIP, IMPORTANT, WARNING, CAUTION) */
+.admonitionblock {
+	--admonition-color: var(--accent);
+	border-left: 4px solid var(--admonition-color);
+	border-radius: 4px;
+	background-color: rgba(var(--gray-light), 50%);
+}
+.admonitionblock.tip {
+	--admonition-color: #1a7f37;
+}
+.admonitionblock.important {
+	--admonition-color: #8250df;
+}
+.admonitionblock.warning {
+	--admonition-color: #bf6a02;
+}
+.admonitionblock.caution {
+	--admonition-color: #cf222e;
+}
+.admonitionblock > table,
+.admonitionblock > table > tbody,
+.admonitionblock > table > tbody > tr,
+.admonitionblock td {
+	display: block;
+}
+.admonitionblock td {
+	padding: 0 1em;
+}
+.admonitionblock td.icon {
+	padding-top: 0.75em;
+}
+.admonitionblock td.icon .title {
+	color: var(--admonition-color);
+	font-size: 0.8em;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+.admonitionblock td.content {
+	padding-bottom: 0.75em;
+}
+
+/* Images */
+.imageblock .content {
+	text-align: center;
+}
+span.image img {
+	vertical-align: middle;
+	border-radius: 0;
+}

@@ -15,6 +15,25 @@ Text paragraph with *bold* and _italic_ text.
 console.log('Hello, AsciiDoc!');
 ----
 
+[source,csharp]
+----
+using System;
+
+public record Person(string Name, int Age);
+
+public static class Program
+{
+    public static void Main()
+    {
+        var people = new[] { new Person("Alice", 30), new Person("Bob", 25) };
+        foreach (var person in people)
+        {
+            Console.WriteLine($"{person.Name} is {person.Age} years old.");
+        }
+    }
+}
+----
+
 NOTE: This is an admonition block.
 
 == Image

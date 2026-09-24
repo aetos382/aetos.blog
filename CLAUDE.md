@@ -12,6 +12,7 @@ docker compose up --detach --wait  # Kroki を起動（dev / build の前提。d
 
 - `src/asciidoctor/` は astro-asciidoc の `extensions` に渡す Asciidoctor 拡張、`src/integrations/` は `astro.config.mjs` から登録する Astro 統合の置き場所。同じ機能の部品が両方にある場合は同名にする（例: `blog-images.js`）。
 - `src/asciidoctor/kroki.js`: asciidoctor-kroki を astro-asciidoc に登録するためのアダプター。図の取得に失敗したらビルドを失敗させる。インライン SVG の id が図どうしで衝突しないよう、図ごとに接頭辞（`kroki-<n>-`）を付けて書き換える（Kroki の Mermaid は id が `container` 固定のため）。
+- `src/asciidoctor/shiki.js`: ソース ブロックをビルド時に Shiki で色付けするハイライター。拡張ではなく astro-asciidoc の `highlighters` に渡し、`source-highlighter: shiki` 属性で選ぶ。Asciidoctor は `highlight()` を同期で呼ぶため、Shiki の全言語を起動時に読み込んでいる。未知の言語は警告を出して素のテキストにする。
 
 ## 注意点
 

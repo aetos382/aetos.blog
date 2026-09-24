@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import asciidoc from 'astro-asciidoc';
 import { fileURLToPath } from 'node:url';
+import shiki from './src/asciidoctor/shiki.js';
 import blogImages from './src/integrations/blog-images.js';
 
 // Published on GitHub Pages as a project site, so every page is served below this path.
@@ -19,6 +20,8 @@ const asciidocConfig = asciidoc({
   options: {
     safe: 'server',
     attributes: {
+      // Colorize source blocks at build time with the highlighter registered below.
+      'source-highlighter': 'shiki',
       // Fetch diagrams from the Kroki server at build time and embed them as data URIs.
       'kroki-server-url': process.env.KROKI_SERVER_URL ?? 'http://localhost:8000',
       'kroki-default-format': 'svg',
@@ -27,6 +30,7 @@ const asciidocConfig = asciidoc({
       'imagesdir@': 'images',
     },
   },
+  highlighters: [await shiki()],
   // Extensions are imported from inside astro-asciidoc, so pass absolute URLs.
   extensions: [
     new URL('./src/asciidoctor/kroki.js', import.meta.url).href,

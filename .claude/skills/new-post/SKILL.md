@@ -1,6 +1,6 @@
 ---
 name: new-post
-description: ブログ記事の雛形を src/content/blog/ に作成する。日本語のタイトルから英語の slug を作る。
+description: ブログ記事の雛形を src/content/blog/<slug>/index.adoc に作成する。日本語のタイトルから英語の slug を作る。
 disable-model-invocation: true
 argument-hint: "<タイトル> [-- <description>]"
 allowed-tools: Write(src/content/blog/**), Bash(date *), Bash(ls *), Bash(git config get *)
@@ -18,7 +18,7 @@ allowed-tools: Write(src/content/blog/**), Bash(date *), Bash(ls *), Bash(git co
 
 ## 手順
 
-ツール呼び出しは Write の 1 回だけで済ませる。ファイルを読んだり、確認のためにコマンドを実行したりしない。
+ツール呼び出しは、同じ応答の中で並列に呼ぶ 2 回の Write だけで済ませる。ファイルを読んだり、確認のためにコマンドを実行したりしない。
 
 1. 引数を解釈する。
    - `--` より後があれば description とする。なければ空文字列とする。
@@ -27,7 +27,10 @@ allowed-tools: Write(src/content/blog/**), Bash(date *), Bash(ls *), Bash(git co
    - 小文字の kebab-case、英数字とハイフンのみ、2〜5 語程度。冠詞や前置詞など意味の薄い語は省く。
    - ローマ字にせず、意味を英訳する。製品名や固有名詞はその英語表記を使う（例: 「Kroki で図を描く」→ `drawing-diagrams-with-kroki`）。
    - 既存の記事と同じ slug になる場合は、語を変えて重複を避ける。
-3. `src/content/blog/<slug>.adoc` に、下のテンプレートの `<...>` を埋めて Write する。
+3. 次の 2 つの Write を同じ応答の中で並列に呼ぶ。
+   - `src/content/blog/<slug>/index.adoc` に、下のテンプレートの `<...>` を埋めて Write する。
+   - `src/content/blog/<slug>/images/.gitkeep` に次の一行（末尾に改行）を Write する。本文の画像の置き場所を Git で残すため。
+     `Keeps this directory in Git. You can delete this file once you add images here.`
 4. 作成したファイルのパスと slug だけを一行で報告する。
 
 ## テンプレート

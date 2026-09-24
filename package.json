@@ -5,12 +5,12 @@
   "bugs": {
     "url": "https://github.com/aetos382/astro-site/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aetos382/astro-site.git"
-  },
+  "repository": "github:aetos382/astro-site",
   "license": "CC-BY-ND-4.0",
-  "author": "aetos",
+  "author": {
+    "name": "aetos",
+    "url": "https://github.com/aetos382"
+  },
   "private": true,
   "type": "module",
   "engines": {

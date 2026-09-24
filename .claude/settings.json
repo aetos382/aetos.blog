@@ -5,7 +5,22 @@
       "Bash(shellcheck *)"
     ],
     "deny": [
-      "Edit(**/*-lock.json)"
+      "Edit(**/*-lock.json)",
+      "Edit(dist/**)",
+      "Edit(.astro/**)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-on-stop.sh\"",
+            "timeout": 180
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
@@ -24,5 +39,6 @@
         "repo": "anthropics/claude-plugins-official"
       }
     }
-  }
+  },
+  "enableAllProjectMcpServers": true
 }

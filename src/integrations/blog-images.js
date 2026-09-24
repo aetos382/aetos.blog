@@ -32,7 +32,8 @@ function isImage(file) {
 /**
  * @param {{ contentDir: string, urlBase: string }} options
  *   `contentDir` is the absolute path of the blog content directory and `urlBase` the URL path the
- *   blog is served from (e.g. `/blog`).
+ *   blog is served from, without Astro's `base` (e.g. `/blog`). The dev server strips `base` from
+ *   request URLs, and the build output directory corresponds to `base`.
  * @returns {import('astro').AstroIntegration}
  */
 export default function blogImages({ contentDir, urlBase }) {

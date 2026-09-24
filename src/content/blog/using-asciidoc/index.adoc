@@ -2,7 +2,7 @@
 aetos
 2026-09-24
 :description: Lorem ipsum dolor sit amet
-:hero-image: ../../assets/blog-placeholder-2.jpg
+:hero-image: ../../../assets/blog-placeholder-2.jpg
 
 This post is written in https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc].
 
@@ -16,6 +16,12 @@ console.log('Hello, AsciiDoc!');
 ----
 
 NOTE: This is an admonition block.
+
+== Image
+
+image::sample.jpg[Sample image]
+
+An inline image: image:sample.jpg[Sample,40].
 
 == Diagram
 

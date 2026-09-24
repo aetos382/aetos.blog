@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // astro-asciidoc passes AsciiDoc entries as `{ title, asciidoc: { ...attributes } }`.
-// Flatten them into the same shape as Markdown frontmatter.
+// Flatten them into the shape the schema expects.
 function flattenAsciiDoc(data: unknown) {
 	if (typeof data !== 'object' || data === null || !('asciidoc' in data)) {
 		return data;
@@ -19,8 +19,8 @@ function flattenAsciiDoc(data: unknown) {
 }
 
 const blog = defineCollection({
-	// Load Markdown, MDX and AsciiDoc files in the `src/content/blog/` directory.
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx,adoc}' }),
+	// Load AsciiDoc files in the `src/content/blog/` directory.
+	loader: glob({ base: './src/content/blog', pattern: '**/*.adoc' }),
 	// Type-check frontmatter using a schema
 	schema: ({ image }) =>
 		z.preprocess(

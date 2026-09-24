@@ -1,9 +1,16 @@
 // @ts-check
 
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import asciidoc from 'astro-asciidoc';
+import { fileURLToPath } from 'node:url';
+import blogImages from './src/integrations/blog-images.js';
+
+// Images placed next to blog posts are served under the same relative path below this URL.
+const blogImagesOptions = {
+  contentDir: fileURLToPath(new URL('./src/content/blog', import.meta.url)),
+  urlBase: '/blog',
+};
 
 const asciidocConfig = asciidoc({
   options: {
@@ -13,16 +20,21 @@ const asciidocConfig = asciidoc({
       'kroki-server-url': process.env.KROKI_SERVER_URL ?? 'http://localhost:8000',
       'kroki-default-format': 'svg',
       'kroki-default-options': 'inline',
+      // Soft default (`@`) so that documents can override it.
+      'imagesdir@': 'images',
     },
   },
   // Extensions are imported from inside astro-asciidoc, so pass absolute URLs.
-  extensions: [new URL('./src/asciidoctor/kroki.js', import.meta.url).href],
+  extensions: [
+    new URL('./src/asciidoctor/kroki.js', import.meta.url).href,
+    { path: new URL('./src/asciidoctor/blog-images.js', import.meta.url).href, options: blogImagesOptions },
+  ],
 });
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://example.com',
-	integrations: [mdx(), sitemap(), asciidocConfig],
+	integrations: [sitemap(), asciidocConfig, blogImages(blogImagesOptions)],
 	fonts: [
 		{
 			provider: fontProviders.local(),

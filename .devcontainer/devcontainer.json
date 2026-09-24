@@ -44,14 +44,14 @@
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
         "ms-vscode.powershell",
-        "timonwong.shellcheck",
-        "unifiedjs.vscode-mdx"
+        "timonwong.shellcheck"
       ],
       "settings": {
         "asciidoc.extensions.enableKroki": true,
         "asciidoc.extensions.kroki.serverUrl": "http://localhost:8000",
         "asciidoc.preview.asciidoctorAttributes": {
-          "kroki-default-options": "inline"
+          "kroki-default-options": "inline",
+          "imagesdir@": "images"
         },
         "files.eol": "\n",
         "shellcheck.executablePath": "/usr/local/bin/shellcheck"

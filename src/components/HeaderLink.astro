@@ -1,15 +1,17 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import { withBase } from '../url';
 
-type Props = HTMLAttributes<'a'>;
+// `href` is a site-relative path without the base path (for example `/blog`).
+type Props = HTMLAttributes<'a'> & { href: string };
 
 const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const pathname = '/' + Astro.url.pathname.slice(withBase('/').length);
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={withBase(href)} class:list={[className, { active: isActive }]} {...props}>
 	<slot />
 </a>
 <style>

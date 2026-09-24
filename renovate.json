@@ -1,0 +1,87 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "configMigration": true,
+  "labels": ["dependencies"],
+  "extends": [
+    "config:best-practices",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "security:openssf-scorecard"
+  ],
+  "timezone": "Asia/Tokyo",
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "packageRules": [
+    {
+      "matchDepNames": ["yuzutech/kroki", "yuzutech/kroki-mermaid"],
+      "groupName": "Kroki",
+      "description": "Keep compose.yaml and the services in ci.yml on the same Kroki version"
+    },
+    {
+      "matchManagers": ["devcontainer"],
+      "matchDepTypes": ["feature"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "description": "Auto-merge minor/patch updates for devcontainer features"
+    },
+    {
+      "matchDatasources": ["github-tags"],
+      "automerge": true,
+      "description": "Auto-merge minor/patch/pin/digest updates for trusted GitHub Actions",
+      "matchDepNames": [
+        "/^actions//",
+        "/^github//"
+      ]
+    },
+    {
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "description": "Auto-merge dev-only npm minor/patch"
+    },
+    {
+      "matchUpdateTypes": ["pin", "pinDigest"],
+      "minimumReleaseAge": null,
+      "automerge": true,
+      "description": "Allow automerge pin updates"
+    },
+    {
+      "matchUpdateTypes": ["replacement"],
+      "minimumReleaseAge": null,
+      "automerge": false,
+      "commitMessagePrefix": "[cautionable]",
+      "description": "Report cautionable updates"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "description": "Don't automerge major updates"
+    },
+    {
+      "matchDepNames": ["koalaman/shellcheck"],
+      "prBodyNotes": [
+        "Renovate does not update the `SHA256` values in `.devcontainer/install-shellcheck.sh`. Update them manually before merging."
+      ],
+      "description": "ShellCheck checksums must be updated by hand"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.devcontainer/.+\\.sh$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Z0-9_]+_VERSION='(?<currentValue>[^']+)'"
+      ],
+      "description": "Versions in dev container shell scripts, marked with a `# renovate:` comment"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "automerge": true,
+    "minimumReleaseAge": null,
+    "addLabels": ["security"]
+  }
+}

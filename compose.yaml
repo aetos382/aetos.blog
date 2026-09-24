@@ -1,0 +1,14 @@
+# Kroki server used to render diagrams in AsciiDoc documents at build time.
+services:
+  kroki:
+    image: yuzutech/kroki:0.32.1
+    environment:
+      KROKI_MERMAID_HOST: mermaid
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - mermaid
+    restart: unless-stopped
+  mermaid:
+    image: yuzutech/kroki-mermaid:0.32.1
+    restart: unless-stopped

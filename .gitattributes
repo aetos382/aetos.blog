@@ -1,0 +1,17 @@
+* text=auto eol=lf
+
+*.md text diff=markdown
+*.sh text diff=bash
+
+.editorconfig text diff=ini
+
+*-lock.json linguist-generated=true -text
+
+# Images (stored in Git LFS)
+*.avif filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.ico filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text

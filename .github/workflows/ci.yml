@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      # Kroki server used to render diagrams in AsciiDoc documents at build time.
+      # Renovate updates these tags together with compose.yaml (the "Kroki" group in renovate.json).
+      kroki:
+        image: yuzutech/kroki:0.32.1
+        env:
+          KROKI_MERMAID_HOST: mermaid
+        ports:
+          - 8000:8000
+      mermaid:
+        image: yuzutech/kroki-mermaid:0.32.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Wait for Kroki
+        run: timeout 60 bash -c 'until curl --fail --silent http://localhost:8000/health > /dev/null; do sleep 2; done'
+      - run: npm run check
+      - run: npm run build

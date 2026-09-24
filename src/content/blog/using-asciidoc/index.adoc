@@ -1,0 +1,37 @@
+= Using AsciiDoc
+aetos
+2026-09-24
+:description: Lorem ipsum dolor sit amet
+:hero-image: ../../../assets/blog-placeholder-2.jpg
+
+This post is written in https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc].
+
+== Section
+
+Text paragraph with *bold* and _italic_ text.
+
+[source,js]
+----
+console.log('Hello, AsciiDoc!');
+----
+
+NOTE: This is an admonition block.
+
+== Image
+
+image::sample.jpg[Sample image]
+
+An inline image: image:sample.jpg[Sample,40].
+
+== Diagram
+
+[graphviz]
+....
+digraph G { Hello -> World }
+....
+
+[mermaid]
+....
+graph LR
+  A --> B
+....

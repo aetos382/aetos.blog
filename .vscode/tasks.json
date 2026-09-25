@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "check",
+      "detail": "astro check で型検査する",
+      "type": "npm",
+      "script": "check",
+      "group": "test",
+      "presentation": {
+        "clear": true
+      },
+      // astro check は TypeScript の書式（ソース名が ts(2322) のように付く）で診断を出力する。
+      // パスはワークスペースからの相対パス。hint も warning として出力される。
+      "problemMatcher": {
+        "owner": "astro-check",
+        "source": "astro check",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.+?):(\\d+):(\\d+)\\s+-\\s+(error|warning|info)\\s+(\\S+):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      }
+    },
+    {
+      "label": "build",
+      "detail": "CI と同じく astro check の後に astro build する（Kroki が起動している必要がある）",
+      "type": "npm",
+      "script": "build",
+      "dependsOn": ["check"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "clear": true
+      },
+      // astro build のエラーはファイル位置を一定の書式で出力しないため、problem matcher は構成しない。
+      "problemMatcher": []
+    }
+  ]
+}

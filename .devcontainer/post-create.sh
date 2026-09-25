@@ -14,6 +14,11 @@ if ! git config get --local --all --fixed-value --value='../.gitconfig' 'include
   git config set --append --local 'include.path' '../.gitconfig'
 fi
 
+# 画像は Git LFS で管理している。/etc/gitconfig や ~/.gitconfig は Codespaces や dotfiles に
+# 上書きされることがあるので、フィルターと LFS 用の Git フック（pre-push など）は
+# リポジトリの設定に入れる。何度実行しても問題ない。
+git lfs install --local
+
 # .claude/settings.json に書かれている marketplace / plugin をプロジェクト スコープで
 # インストールする。ローカル（Windows を含む）でも同じ処理を使うので、本体は PowerShell で書いてある。
 pwsh -NoProfile -File .claude/install-plugins.ps1

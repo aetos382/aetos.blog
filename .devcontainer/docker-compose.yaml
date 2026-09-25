@@ -1,0 +1,44 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:3-ubuntu26.04
+    volumes:
+      - ../..:/workspaces:cached
+    environment:
+      KROKI_SERVER_URL: http://kroki:8000
+    depends_on:
+      kroki:
+        condition: service_healthy
+  kroki:
+    image: yuzutech/kroki:0.32.1@sha256:6980bfb218b48b74ea14b888d9c7e8c032d1cb6325f3292277abdf62483abd9d
+    environment:
+      KROKI_MERMAID_HOST: mermaid
+    networks:
+      - default
+      - kroki-internal
+    depends_on:
+      mermaid:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost:8000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+      start_interval: 1s
+  mermaid:
+    image: yuzutech/kroki-mermaid:0.32.1@sha256:ad6721646aabfb8b5f5005db2daa6e37189c25e18aab19a8ef8590b6171cd192
+    networks:
+      - kroki-internal
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:8002/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+      start_interval: 1s
+
+networks:
+  kroki-internal:
+    internal: true

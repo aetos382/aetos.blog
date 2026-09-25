@@ -43,7 +43,8 @@ export default function (context) {
 				if (failed.length > 0) {
 					throw new Error(
 						`Failed to render ${failed.length} diagram(s) with Kroki in ${doc.getAttribute('docfile')}. ` +
-							'Make sure the Kroki server is running (see compose.yaml).',
+							`Make sure the Kroki server is reachable at ${doc.getAttribute('kroki-server-url')} ` +
+							'(set KROKI_SERVER_URL to change it).',
 					);
 				}
 

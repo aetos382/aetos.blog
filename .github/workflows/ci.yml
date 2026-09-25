@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       # Kroki server used to render diagrams in AsciiDoc documents at build time.
-      # Renovate updates these tags together with compose.yaml (the "Kroki" group in renovate.json).
+      # Renovate updates these tags together with .devcontainer/docker-compose.yaml (the "Kroki" group in renovate.json).
       kroki:
         image: yuzutech/kroki:0.32.1@sha256:6980bfb218b48b74ea14b888d9c7e8c032d1cb6325f3292277abdf62483abd9d
         env:

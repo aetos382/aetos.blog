@@ -1,11 +1,11 @@
 {
   "name": "astro-site",
   "version": "0.1.0",
-  "homepage": "https://github.com/aetos382/astro-site",
+  "homepage": "https://github.com/aetos382/aetos.blog",
   "bugs": {
-    "url": "https://github.com/aetos382/astro-site/issues"
+    "url": "https://github.com/aetos382/aetos.blog/issues"
   },
-  "repository": "github:aetos382/astro-site",
+  "repository": "github:aetos382/aetos.blog",
   "license": "CC-BY-ND-4.0",
   "author": {
     "name": "aetos",

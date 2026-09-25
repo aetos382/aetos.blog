@@ -7,9 +7,6 @@ import { fileURLToPath } from 'node:url';
 import shiki from './src/asciidoctor/shiki.js';
 import blogImages from './src/integrations/blog-images.js';
 
-// Published on GitHub Pages as a project site, so every page is served below this path.
-const base = '/astro-site';
-
 // Images placed next to blog posts are served under the same relative path below this URL.
 const blogImagesOptions = {
   contentDir: fileURLToPath(new URL('./src/content/blog', import.meta.url)),
@@ -36,16 +33,14 @@ const asciidocConfig = asciidoc({
     new URL('./src/asciidoctor/kroki.js', import.meta.url).href,
     {
       path: new URL('./src/asciidoctor/blog-images.js', import.meta.url).href,
-      // Image URLs in the converted HTML must include the base path.
-      options: { ...blogImagesOptions, urlBase: `${base}${blogImagesOptions.urlBase}` },
+      options: blogImagesOptions,
     },
   ],
 });
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://aetos382.github.io',
-	base,
+	site: 'https://aetos.blog',
 	integrations: [sitemap(), asciidocConfig, blogImages(blogImagesOptions)],
 	fonts: [
 		{

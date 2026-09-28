@@ -15,7 +15,7 @@
     {
       "matchDepNames": ["yuzutech/kroki", "yuzutech/kroki-mermaid"],
       "groupName": "Kroki",
-      "description": "Keep compose.yaml and the services in ci.yml on the same Kroki version"
+      "description": "Keep .devcontainer/docker-compose.yaml and the services in ci.yml on the same Kroki version"
     },
     {
       "matchManagers": ["devcontainer"],

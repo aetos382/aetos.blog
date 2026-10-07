@@ -11,6 +11,27 @@
       "description": "Keep compose.yaml and the services in ci.yml on the same Kroki version"
     },
     {
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "description": "Auto-merge npm patch updates of dependencies too. This is a site, not a published package, and CI builds the whole site"
+    },
+    {
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor"],
+      "matchCurrentVersion": ">=1.0.0",
+      "automerge": true,
+      "description": "Auto-merge npm minor updates of dependencies, except 0.x where a minor update can be breaking"
+    },
+    {
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "description": "@astrojs/check supports TypeScript ^5 || ^6. Approve on the Dependency Dashboard when @astrojs/check supports the new major"
+    },
+    {
       "matchDepNames": ["koalaman/shellcheck"],
       "prBodyNotes": [
         "Renovate does not update the `SHA256` values in `.devcontainer/install-shellcheck.sh`. Update them manually before merging."

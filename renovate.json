@@ -1,16 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "configMigration": true,
-  "labels": ["dependencies"],
   "extends": [
-    "config:best-practices",
-    "helpers:pinGitHubActionDigestsToSemver",
-    "security:openssf-scorecard"
+    "github>aetos382/renovate-presets//presets/default",
+    "github>aetos382/renovate-presets//presets/devcontainer"
   ],
-  "timezone": "Asia/Tokyo",
-  "minimumReleaseAge": "3 days",
-  "osvVulnerabilityAlerts": true,
-  "dependencyDashboardOSVVulnerabilitySummary": "all",
   "packageRules": [
     {
       "matchDepNames": ["yuzutech/kroki", "yuzutech/kroki-mermaid"],
@@ -18,45 +11,24 @@
       "description": "Keep .devcontainer/docker-compose.yaml and the services in ci.yml on the same Kroki version"
     },
     {
-      "matchManagers": ["devcontainer"],
-      "matchDepTypes": ["feature"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
       "automerge": true,
-      "description": "Auto-merge minor/patch updates for devcontainer features"
-    },
-    {
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "description": "Auto-merge minor/patch/pin/digest updates for trusted GitHub Actions",
-      "matchDepNames": [
-        "/^actions//",
-        "/^github//"
-      ]
+      "description": "Auto-merge npm patch updates of dependencies too. This is a site, not a published package, and CI builds the whole site"
     },
     {
       "matchDatasources": ["npm"],
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor"],
+      "matchCurrentVersion": ">=1.0.0",
       "automerge": true,
-      "description": "Auto-merge dev-only npm minor/patch"
+      "description": "Auto-merge npm minor updates of dependencies, except 0.x where a minor update can be breaking"
     },
     {
-      "matchUpdateTypes": ["pin", "pinDigest"],
-      "minimumReleaseAge": null,
-      "automerge": true,
-      "description": "Allow automerge pin updates"
-    },
-    {
-      "matchUpdateTypes": ["replacement"],
-      "minimumReleaseAge": null,
-      "automerge": false,
-      "commitMessagePrefix": "[cautionable]",
-      "description": "Report cautionable updates"
-    },
-    {
-      "matchUpdateTypes": ["major"],
-      "automerge": false,
-      "description": "Don't automerge major updates"
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7.0.0",
+      "description": "@astrojs/check supports TypeScript ^5 || ^6 only. Its replacement, @astrojs/ts-content-mapper, needs TypeScript 7.1. Remove this limit when TypeScript 7.1 is released (aetos382/aetos.blog#30)"
     },
     {
       "matchDepNames": ["koalaman/shellcheck"],
@@ -65,23 +37,5 @@
       ],
       "description": "ShellCheck checksums must be updated by hand"
     }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^\\.devcontainer/.+\\.sh$/"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Z0-9_]+_VERSION='(?<currentValue>[^']+)'"
-      ],
-      "description": "Versions in dev container shell scripts, marked with a `# renovate:` comment"
-    }
-  ],
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "automerge": true,
-    "minimumReleaseAge": null,
-    "addLabels": ["security"]
-  }
+  ]
 }

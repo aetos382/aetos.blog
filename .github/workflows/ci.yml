@@ -17,13 +17,13 @@ jobs:
       # Kroki server used to render diagrams in AsciiDoc documents at build time.
       # Renovate updates these tags together with .devcontainer/docker-compose.yaml (the "Kroki" group in renovate.json).
       kroki:
-        image: yuzutech/kroki:0.32.1@sha256:6980bfb218b48b74ea14b888d9c7e8c032d1cb6325f3292277abdf62483abd9d
+        image: yuzutech/kroki:0.33.0@sha256:a4341ac44cd2590124da7142d13fdf5d83eadc2b94c023d018a2227695a30da1
         env:
           KROKI_MERMAID_HOST: mermaid
         ports:
           - 8000:8000
       mermaid:
-        image: yuzutech/kroki-mermaid:0.32.1@sha256:ad6721646aabfb8b5f5005db2daa6e37189c25e18aab19a8ef8590b6171cd192
+        image: yuzutech/kroki-mermaid:0.33.0@sha256:2fd07c6ef9ef99e59c288f125fdb411188569237544f7db8d69935a2d7efa08d
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

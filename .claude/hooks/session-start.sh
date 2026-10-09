@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Claude Code の SessionStart フック。Claude Code on the web のコンテナは毎回まっさらなので、
 # lsp プラグインの language server と Stop フックの astro check が動くよう node_modules を入れる。
-# devcontainer / ローカルでは自分で npm ci する前提なので何もしない。
+# devcontainer では .devcontainer/update-content.sh が、ローカルでは自分で npm ci するので、何もしない。
 set -euo pipefail
 
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then

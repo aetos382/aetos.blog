@@ -5,9 +5,6 @@ services:
       - ../..:/workspaces:cached
     environment:
       KROKI_SERVER_URL: http://kroki:8000
-    depends_on:
-      kroki:
-        condition: service_healthy
   kroki:
     image: yuzutech/kroki:0.32.1@sha256:6980bfb218b48b74ea14b888d9c7e8c032d1cb6325f3292277abdf62483abd9d
     environment:
@@ -20,7 +17,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost:8000/health"]
+      test: ["CMD", "wget", "--quiet", "--output-document=/dev/null", "--timeout=2", "http://localhost:8000/health"]
       interval: 5s
       timeout: 3s
       retries: 3
@@ -31,10 +28,22 @@ services:
     networks:
       - kroki-internal
     restart: unless-stopped
+    # node を PID 1 にしない。PID 1 だと、下の healthcheck から SIGKILL で終了させられない。
+    init: true
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:8002/health"]
+      # 負荷が高いときに起動すると、Chrome の起動がタイムアウトし、その後 /health が応答を返さないままになる。
+      # 自力では復旧せず、プロセスも終了しないので、restart ポリシーも働かない。
+      # 起動から 60 秒（start_period）を過ぎても応答しなければ、コンテナー内のプロセスをすべて終了させて、
+      # restart ポリシーにコンテナーを再起動させる。SIGTERM では、この状態の node は終了しない。
+      # wget のタイムアウトは、下の timeout より短くする。先に timeout になると、kill まで進まない。
+      test:
+        - CMD-SHELL
+        - |
+          wget --quiet --output-document=/dev/null --timeout=2 http://localhost:8002/health && exit 0
+          [ "$$(( $$(date +%s) - $$(stat -c %Y /proc/1) ))" -gt 60 ] && kill -KILL -1
+          exit 1
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 3
       start_period: 60s
       start_interval: 1s

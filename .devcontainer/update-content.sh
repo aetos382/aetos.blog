@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # renovate: datasource=npm depName=renovate
-RENOVATE_VERSION='44.140.0'
+RENOVATE_VERSION='44.142.1'
 
 bash "$(dirname "$0")/install-shellcheck.sh"
 

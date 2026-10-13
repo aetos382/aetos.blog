@@ -7,7 +7,7 @@
 set -euo pipefail
 
 # renovate: datasource=npm depName=renovate
-RENOVATE_VERSION='44.148.3'
+RENOVATE_VERSION='44.149.1'
 
 npm install -g "renovate@${RENOVATE_VERSION}"
 renovate --version

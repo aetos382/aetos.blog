@@ -2,7 +2,8 @@
 paths:
   - renovate.json
   - .devcontainer/docker-compose.yaml
-  - .github/workflows/ci.yml
+  - .github/workflows/**
+  - .devcontainer/*.sh
   - .github/dependabot.yml
   - .devcontainer/devcontainer.json
 ---
@@ -15,3 +16,4 @@ paths:
 - devcontainer の features だけは Dependabot（`.github/dependabot.yml`）で更新する。Renovate は `devcontainer-lock.json` を更新できないため（renovatebot/renovate#43169）。Renovate が対応したら Dependabot をやめて Renovate に一本化する。
 - `.devcontainer/docker-compose.yaml` と `.github/workflows/ci.yml` の `services` の Kroki イメージは同じグループで一緒に更新される。手でタグを変えるときも両方を揃える。
 - `renovate.json` をコミットすると、pre-commit フックがステージされた内容を `renovate-config-validator --strict` で検証する。手で実行するときは、リポジトリ直下で `CODESPACES=false renovate-config-validator --strict < /dev/null` と引数なしで実行する（ファイル名を渡すと global config として検証される。Codespaces では `CODESPACES=false` がないとリポジトリ名の入力待ちで止まる）。
+- action のコミットは `.github/workflows/actions.lock` で固定している。それを作る gh の拡張機能 gh-actions-lock のバージョンは `.devcontainer/versions.sh` の `GH_ACTIONS_LOCK_VERSION` と `renovate.json` の `constraints.ghActionsLock` の 2 箇所にあり、同じ値にする。後者は Renovate がロックファイルを作り直すときに使うバージョンである。

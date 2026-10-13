@@ -29,13 +29,6 @@
       "matchPackageNames": ["typescript"],
       "allowedVersions": "<7.0.0",
       "description": "@astrojs/check supports TypeScript ^5 || ^6 only. Its replacement, @astrojs/ts-content-mapper, needs TypeScript 7.1. Remove this limit when TypeScript 7.1 is released (aetos382/aetos.blog#30)"
-    },
-    {
-      "matchDepNames": ["koalaman/shellcheck"],
-      "prBodyNotes": [
-        "Renovate does not update the `SHA256` values in `.devcontainer/install-shellcheck.sh`. Update them manually before merging."
-      ],
-      "description": "ShellCheck checksums must be updated by hand"
     }
   ]
 }

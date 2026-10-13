@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 name: CI
 
 on:
@@ -25,11 +27,11 @@ jobs:
       mermaid:
         image: yuzutech/kroki-mermaid:0.33.0@sha256:2fd07c6ef9ef99e59c288f125fdb411188569237544f7db8d69935a2d7efa08d
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           lfs: true
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: 24
           cache: npm
@@ -40,9 +42,44 @@ jobs:
       - run: npm run build
       # Publish only what is built from main (pushes, or manual runs on main).
       - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: dist
+
+  # A mismatch between the workflows and actions.lock, or a lockfile that cannot be read, may only
+  # drop the pinning on the runner instead of failing the run, so it is stopped here.
+  actions-lock:
+    runs-on: ubuntu-latest
+    # The token is handed to an extension fetched by tag, so it is kept read-only.
+    permissions:
+      contents: read
+    env:
+      # Used to fetch the extension and for the GitHub API calls that --verify makes.
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      # Images are not needed here, so LFS objects are not fetched.
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Verify actions.lock
+        run: |
+          set -euo pipefail
+          # Verify with the same version as the dev container and Renovate.
+          source .devcontainer/versions.sh
+          gh extension install github/gh-actions-lock --pin "${GH_ACTIONS_LOCK_VERSION}"
+          # The exit code alone is not enough: when the GitHub API cannot be reached, the commits
+          # are left unverified, which is reported only as a warning finding with exit code 0.
+          # Info findings (such as the record of a deleted workflow) are allowed.
+          status=0
+          result="$(gh actions-lock --no-fix --no-interactive --verify --json=valid,findings)" || status=$?
+          printf '%s\n' "${result}"
+          if [ "${status}" -ne 0 ]; then
+            exit "${status}"
+          fi
+          if ! jq -e '.valid == true and all(.findings[]; .severity == "info")' <<<"${result}" >/dev/null; then
+            echo "::error::gh actions-lock reported findings, or could not verify the pinned commits." >&2
+            exit 1
+          fi
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
@@ -60,4 +97,33 @@ jobs:
       cancel-in-progress: false
     steps:
       - id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        uses: actions/deploy-pages@v5.0.1
+
+  # The only status check that the main branch ruleset requires. The results of all other jobs are
+  # aggregated here, so that the ruleset needs no change whenever a job is added or renamed.
+  # Add every new job to needs. A job that is missing there does not block a merge when it fails.
+  # Do not rename this job: the ruleset refers to it by this ID.
+  ci-passed:
+    # When a job in needs fails, this job is skipped by default, and a skipped job satisfies a
+    # required check. always() makes it run, so that it can fail here instead.
+    if: always()
+    needs:
+      - build
+      - actions-lock
+      - deploy
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check the results of all jobs
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          set -euo pipefail
+          jq -r 'to_entries[] | "\(.key): \(.value.result)"' <<<"$NEEDS"
+          # deploy runs only for main, so it is skipped on pull requests. That is the one result
+          # other than success that is accepted. When build fails, deploy is skipped as well, but
+          # then build itself fails this check.
+          if ! jq -e 'all(to_entries[]; .value.result == "success" or (.key == "deploy" and .value.result == "skipped"))' <<<"$NEEDS" >/dev/null; then
+            echo "::error::Not all jobs succeeded." >&2
+            exit 1
+          fi

@@ -36,8 +36,8 @@
     "esbuild": true
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.11",
-    "@astrojs/language-server": "2.17.2",
+    "@astrojs/check": "0.9.12",
+    "@astrojs/language-server": "2.17.3",
     "typescript": "6.0.3",
     "typescript-language-server": "6.0.2"
   }

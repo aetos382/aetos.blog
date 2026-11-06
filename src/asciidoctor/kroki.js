@@ -2,7 +2,7 @@
 // astro-asciidoc calls the default export with the configured options and registers the returned
 // value as an Asciidoctor extension group.
 
-import asciidoctorKroki from 'asciidoctor-kroki';
+import { register as registerKroki } from 'asciidoctor-kroki';
 
 const SVG_DATA_URI_PREFIX = 'data:image/svg+xml;base64,';
 
@@ -32,7 +32,7 @@ function prefixSvgIds(svg, prefix) {
  */
 export default function (context) {
 	return (/** @type {import('@asciidoctor/core').Registry} */ registry) => {
-		asciidoctorKroki.register(registry, context);
+		registerKroki(registry, context);
 
 		registry.treeProcessor(function () {
 			this.process((/** @type {import('@asciidoctor/core').Document} */ doc) => {

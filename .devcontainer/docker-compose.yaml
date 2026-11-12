@@ -6,7 +6,7 @@ services:
     environment:
       KROKI_SERVER_URL: http://kroki:8000
   kroki:
-    image: yuzutech/kroki:0.35.0@sha256:fe8f90cc3d5a7e98814138e89e9d3944fa1bdb854f85e8580f1d653989de8b48
+    image: yuzutech/kroki:0.36.0@sha256:de0f2fdc42e926d54706ac962aa5cfb38c5c387035a1b30d07ce297bbc37057b
     environment:
       KROKI_MERMAID_HOST: mermaid
     networks:
@@ -24,7 +24,7 @@ services:
       start_period: 60s
       start_interval: 1s
   mermaid:
-    image: yuzutech/kroki-mermaid:0.35.0@sha256:e4d8270ed28464798143c3c8c88fb02c9df0b794e15ff63159f6d99ebff2a726
+    image: yuzutech/kroki-mermaid:0.36.0@sha256:0f9d9420d2577474f20909bb0679d398949561d5d88435e66e742b28db066bd2
     networks:
       - kroki-internal
     restart: unless-stopped
